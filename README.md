@@ -100,9 +100,11 @@ python scripts/maxwells_demon.py
 
 ## Interactive Demos
 
-Open the HTML files directly in a browser — no server required:
+### **[Launch the Live Demos →](https://fancyland-llc.github.io/arithmetic-black-hole/)**
 
-- **`demo/index.html`** — Full 11-module Arithmetic Black Hole Simulator with N-Body, Spectral, Thermodynamic, Hamiltonian, Curvature, Horizon, Hawking–Page, and Scrambler dashboards
+Or open the HTML files directly in a browser — no server required:
+
+- **`demo/simulator.html`** — Full 11-module Arithmetic Black Hole Simulator with N-Body, Spectral, Thermodynamic, Hamiltonian, Curvature, Horizon, Hawking–Page, and Scrambler dashboards
 - **`demo/the_tower.html`** — The Tower: holographic principle visualization
 
 ## Companion Papers
