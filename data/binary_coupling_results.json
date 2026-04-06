@@ -1,0 +1,596 @@
+{
+  "30": [
+    {
+      "gamma": 0.0,
+      "weighted": {
+        "H_omega": 0.0284,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0284,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.04,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.08,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.12,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.16,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.2,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.28,
+      "weighted": {
+        "H_omega": 0.1898,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.36,
+      "weighted": {
+        "H_omega": 0.3721,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.44,
+      "weighted": {
+        "H_omega": 0.2931,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.52,
+      "weighted": {
+        "H_omega": 0.3455,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.004,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.6,
+      "weighted": {
+        "H_omega": 0.4058,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.1051,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.72,
+      "weighted": {
+        "H_omega": 0.3641,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.278,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 0.84,
+      "weighted": {
+        "H_omega": 0.3002,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.357,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    },
+    {
+      "gamma": 1.0,
+      "weighted": {
+        "H_omega": 0.2457,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.3885,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.0
+    }
+  ],
+  "210": [
+    {
+      "gamma": 0.0,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": null,
+        "verdict": "INSUFFICIENT_DATA"
+      },
+      "time_s": 0.04
+    },
+    {
+      "gamma": 0.04,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.5335,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.5694,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.08,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.5033,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.7042,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.12,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.639,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.8399,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.16,
+      "weighted": {
+        "H_omega": 0.0922,
+        "CA_omega": 0.6519,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.9734,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.2,
+      "weighted": {
+        "H_omega": 0.0807,
+        "CA_omega": 0.6705,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.9539,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.28,
+      "weighted": {
+        "H_omega": 0.1783,
+        "CA_omega": 0.2852,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.9747,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.06
+    },
+    {
+      "gamma": 0.36,
+      "weighted": {
+        "H_omega": 0.1876,
+        "CA_omega": 0.5242,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.9432,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.06
+    },
+    {
+      "gamma": 0.44,
+      "weighted": {
+        "H_omega": 0.1747,
+        "CA_omega": 0.5335,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0204,
+        "CA_omega": 0.7401,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.06
+    },
+    {
+      "gamma": 0.52,
+      "weighted": {
+        "H_omega": 0.1317,
+        "CA_omega": 0.4976,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0807,
+        "CA_omega": 0.5428,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.6,
+      "weighted": {
+        "H_omega": 0.1317,
+        "CA_omega": 0.4674,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.075,
+        "CA_omega": 0.5601,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.72,
+      "weighted": {
+        "H_omega": 0.1446,
+        "CA_omega": 0.4022,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.1144,
+        "CA_omega": 0.6741,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 0.84,
+      "weighted": {
+        "H_omega": 0.1388,
+        "CA_omega": 0.4395,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0865,
+        "CA_omega": 0.8492,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    },
+    {
+      "gamma": 1.0,
+      "weighted": {
+        "H_omega": 0.1503,
+        "CA_omega": 0.3836,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.1539,
+        "CA_omega": 0.6763,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 0.05
+    }
+  ],
+  "2310": [
+    {
+      "gamma": 0.0,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.0297,
+        "verdict": "BULK_OK / BOUNDARY_WEAK"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.0297,
+        "verdict": "BULK_OK / BOUNDARY_WEAK"
+      },
+      "time_s": 7.15
+    },
+    {
+      "gamma": 0.04,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3548,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3455,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 14.28
+    },
+    {
+      "gamma": 0.08,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4661,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3326,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 14.43
+    },
+    {
+      "gamma": 0.12,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4452,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3326,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 14.37
+    },
+    {
+      "gamma": 0.16,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4718,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3197,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 15.04
+    },
+    {
+      "gamma": 0.2,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4639,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3721,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 15.84
+    },
+    {
+      "gamma": 0.28,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4302,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4173,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 15.53
+    },
+    {
+      "gamma": 0.36,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.408,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4581,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 15.64
+    },
+    {
+      "gamma": 0.44,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3885,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4674,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 16.18
+    },
+    {
+      "gamma": 0.52,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3082,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4905,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 16.24
+    },
+    {
+      "gamma": 0.6,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3304,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4696,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 16.47
+    },
+    {
+      "gamma": 0.72,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.3118,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.5055,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 16.12
+    },
+    {
+      "gamma": 0.84,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.2909,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4918,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 16.32
+    },
+    {
+      "gamma": 1.0,
+      "weighted": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.2665,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "binary": {
+        "H_omega": 0.0018,
+        "CA_omega": 0.4767,
+        "verdict": "HOLOGRAPHIC \u2713"
+      },
+      "time_s": 16.1
+    }
+  ]
+}
