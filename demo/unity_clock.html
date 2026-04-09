@@ -1,0 +1,1811 @@
+﻿<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <title>The Unity Clock — Ancient Structure, Modern Computation</title>
+        <meta
+            name="description"
+            content="I Ching to Arithmetic Qubit: 4 modes capture the tension between addition and multiplication across 3,000 years. Matos (2026) DOI 10.5281/zenodo.19478727" />
+        <style>
+            :root {
+                --bg: #0a0a0f;
+                --bg-card: #12121a;
+                --bg-card-hover: #1a1a25;
+                --text: #e8e6e3;
+                --text-muted: #9a9a9a;
+                --purple: #9d8cff;
+                --teal: #5dcaa5;
+                --blue: #85b7eb;
+                --coral: #f0997b;
+                --gold: #d4af37;
+                --border: rgba(255, 255, 255, 0.08);
+            }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: "Segoe UI", system-ui, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.7;
+                min-height: 100vh;
+            }
+            .container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 2rem;
+            }
+
+            /* header */
+            header {
+                text-align: center;
+                padding: 4rem 0 2.5rem;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 3.5rem;
+            }
+            .eyebrow {
+                font-size: 0.78rem;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 1rem;
+            }
+            h1 {
+                font-size: 3rem;
+                font-weight: 300;
+                margin-bottom: 0.75rem;
+                line-height: 1.15;
+            }
+            h1 span {
+                font-weight: 700;
+                background: linear-gradient(135deg, var(--purple), var(--teal));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .subtitle {
+                color: var(--text-muted);
+                font-size: 1.1rem;
+                max-width: 700px;
+                margin: 0 auto 1.5rem;
+            }
+            .doi {
+                font-size: 0.82rem;
+                color: var(--text-muted);
+            }
+            .doi a {
+                color: var(--purple);
+                text-decoration: none;
+            }
+            .doi a:hover {
+                text-decoration: underline;
+            }
+
+            /* section headings */
+            h2 {
+                font-size: 1.55rem;
+                font-weight: 400;
+                margin: 3.5rem 0 1.25rem;
+                color: var(--purple);
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+            h2::before {
+                content: "";
+                width: 4px;
+                height: 1.35rem;
+                background: linear-gradient(to bottom, var(--purple), var(--teal));
+                border-radius: 2px;
+                flex-shrink: 0;
+            }
+            p {
+                margin-bottom: 1.2rem;
+            }
+
+            /* cards / panels */
+            .panel {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.75rem;
+            }
+            .panel-title {
+                font-size: 0.82rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                margin-bottom: 1rem;
+            }
+
+            .intro-box {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-left: 3px solid var(--purple);
+                border-radius: 0 12px 12px 0;
+                padding: 1.4rem 1.8rem;
+                margin: 1.75rem 0;
+                font-size: 1.05rem;
+                color: var(--text-muted);
+            }
+            .intro-box strong {
+                color: var(--text);
+            }
+
+            /* timeline */
+            .timeline {
+                position: relative;
+                margin: 2.5rem 0;
+                padding-left: 2.5rem;
+            }
+            .timeline::before {
+                content: "";
+                position: absolute;
+                left: 0.65rem;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background: linear-gradient(to bottom, var(--gold) 0%, var(--purple) 50%, var(--teal) 100%);
+                border-radius: 2px;
+            }
+            .timeline-entry {
+                position: relative;
+                margin-bottom: 2.25rem;
+            }
+            .timeline-entry::before {
+                content: "";
+                position: absolute;
+                left: -1.93rem;
+                top: 0.3rem;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                border: 2px solid var(--bg);
+            }
+            .tl-ancient::before {
+                background: var(--gold);
+            }
+            .tl-modern::before {
+                background: var(--purple);
+            }
+            .tl-future::before {
+                background: var(--teal);
+            }
+            .tl-era {
+                font-size: 0.72rem;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-bottom: 0.3rem;
+                font-weight: 600;
+            }
+            .tl-ancient .tl-era {
+                color: var(--gold);
+            }
+            .tl-modern .tl-era {
+                color: var(--purple);
+            }
+            .tl-future .tl-era {
+                color: var(--teal);
+            }
+            .tl-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--text);
+                margin-bottom: 0.4rem;
+            }
+            .tl-body {
+                font-size: 0.93rem;
+                color: var(--text-muted);
+                margin-bottom: 0;
+            }
+
+            /* demo grid */
+            .demo-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                margin: 1.5rem 0;
+            }
+            @media (max-width: 800px) {
+                .demo-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            #clockSvg {
+                width: 100%;
+                max-width: 280px;
+                display: block;
+                margin: 0 auto;
+            }
+            .clock-meta {
+                text-align: center;
+                margin-top: 0.75rem;
+                font-size: 0.85rem;
+                color: var(--text-muted);
+            }
+            .clock-meta strong {
+                color: var(--teal);
+                font-size: 1rem;
+            }
+            #tentSvg {
+                width: 100%;
+                height: 160px;
+            }
+            .fourier-row {
+                display: flex;
+                align-items: flex-end;
+                gap: 0.75rem;
+                height: 80px;
+                margin-top: 1.25rem;
+                padding-top: 1rem;
+                border-top: 1px solid var(--border);
+            }
+            .fbar-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.35rem;
+                flex: 1;
+            }
+            .fbar-track {
+                width: 100%;
+                height: 56px;
+                background: rgba(255, 255, 255, 0.04);
+                border-radius: 4px;
+                display: flex;
+                align-items: flex-end;
+                overflow: hidden;
+            }
+            .fbar-fill {
+                width: 100%;
+                background: linear-gradient(to top, var(--purple), var(--teal));
+                border-radius: 4px 4px 0 0;
+                transition: height 0.45s;
+            }
+            .fbar-label {
+                font-size: 0.72rem;
+                color: var(--text-muted);
+            }
+            .fbar-val {
+                font-size: 0.68rem;
+                color: var(--teal);
+                font-family: monospace;
+            }
+
+            /* controls */
+            .controls {
+                display: flex;
+                justify-content: center;
+                gap: 0.65rem;
+                margin: 1.5rem 0;
+                flex-wrap: wrap;
+            }
+            .ctrl-btn {
+                padding: 0.5rem 1.1rem;
+                border: 1px solid var(--border);
+                background: var(--bg-card);
+                color: var(--text-muted);
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 0.85rem;
+                transition: all 0.18s;
+                font-family: inherit;
+            }
+            .ctrl-btn:hover {
+                background: var(--bg-card-hover);
+                border-color: rgba(255, 255, 255, 0.15);
+                color: var(--text);
+            }
+            .ctrl-btn.active {
+                background: var(--purple);
+                border-color: var(--purple);
+                color: #fff;
+            }
+
+            /* energy bar */
+            .energy-bar-outer {
+                height: 52px;
+                background: rgba(255, 255, 255, 0.03);
+                border-radius: 10px;
+                display: flex;
+                overflow: hidden;
+                margin: 1.5rem 0;
+            }
+            .e-main {
+                background: linear-gradient(90deg, var(--purple), var(--teal));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.88rem;
+                font-weight: 600;
+                color: #fff;
+                transition: width 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
+                border-radius: 10px 0 0 10px;
+            }
+            .e-rest {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                padding: 0 0.5rem;
+                transition: width 0.55s;
+            }
+            .stats-row {
+                display: flex;
+                justify-content: space-around;
+                text-align: center;
+                padding-top: 1.5rem;
+                border-top: 1px solid var(--border);
+                margin-top: 0.5rem;
+            }
+            .stat-val {
+                font-size: 1.9rem;
+                font-weight: 300;
+                color: var(--teal);
+                line-height: 1;
+                min-height: 2rem;
+            }
+            .stat-desc {
+                font-size: 0.78rem;
+                color: var(--text-muted);
+                margin-top: 0.2rem;
+            }
+
+            /* four modes */
+            .highlight-box {
+                background: linear-gradient(135deg, rgba(157, 140, 255, 0.08), rgba(93, 202, 165, 0.08));
+                border: 1px solid rgba(157, 140, 255, 0.2);
+                border-radius: 16px;
+                padding: 2rem;
+                margin: 1.75rem 0;
+                text-align: center;
+            }
+            .big-eq {
+                font-size: 1.9rem;
+                font-weight: 300;
+                font-family: Georgia, serif;
+                margin-bottom: 0.75rem;
+            }
+            .big-eq .n {
+                color: var(--teal);
+                font-weight: 600;
+            }
+            .highlight-sub {
+                color: var(--text-muted);
+                font-size: 0.92rem;
+            }
+            .modes-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+                margin: 1.75rem 0;
+            }
+            @media (max-width: 700px) {
+                .modes-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            .mode-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 1.25rem 1rem;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.22s;
+                position: relative;
+                overflow: hidden;
+            }
+            .mode-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+            }
+            .mode-card.m1::before {
+                background: var(--purple);
+            }
+            .mode-card.m2::before {
+                background: var(--teal);
+            }
+            .mode-card.m3::before {
+                background: var(--coral);
+            }
+            .mode-card.m4::before {
+                background: var(--blue);
+            }
+            .mode-card:hover,
+            .mode-card.lit {
+                background: var(--bg-card-hover);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            }
+            .mode-sigma {
+                font-size: 1.8rem;
+                font-weight: 300;
+                margin-bottom: 0.3rem;
+            }
+            .mode-card.m1 .mode-sigma {
+                color: var(--purple);
+            }
+            .mode-card.m2 .mode-sigma {
+                color: var(--teal);
+            }
+            .mode-card.m3 .mode-sigma {
+                color: var(--coral);
+            }
+            .mode-card.m4 .mode-sigma {
+                color: var(--blue);
+            }
+            .mode-parity {
+                font-size: 0.78rem;
+                color: var(--text-muted);
+                margin-bottom: 0.25rem;
+            }
+            .mode-label {
+                font-size: 0.8rem;
+                color: var(--text);
+            }
+            .mode-energy-bar {
+                height: 4px;
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 2px;
+                margin-top: 0.75rem;
+                overflow: hidden;
+            }
+            .mode-energy-fill {
+                height: 100%;
+                border-radius: 2px;
+                transition: width 0.5s;
+            }
+            .mode-card.m1 .mode-energy-fill {
+                background: var(--purple);
+            }
+            .mode-card.m2 .mode-energy-fill {
+                background: var(--teal);
+            }
+            .mode-card.m3 .mode-energy-fill {
+                background: var(--coral);
+            }
+            .mode-card.m4 .mode-energy-fill {
+                background: var(--blue);
+            }
+
+            /* tower */
+            .tower-wrap {
+                position: relative;
+                padding: 2rem 0;
+                margin: 2rem 0;
+            }
+            .tower-spine {
+                position: absolute;
+                left: 50%;
+                top: 0;
+                bottom: 0;
+                width: 3px;
+                background: linear-gradient(to bottom, var(--gold), var(--purple), var(--teal));
+                transform: translateX(-50%);
+                border-radius: 2px;
+                z-index: 0;
+            }
+            .tower-row {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1.5rem;
+                margin: 1.5rem 0;
+                position: relative;
+                z-index: 1;
+            }
+            .tower-row::before {
+                content: "";
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                border: 2px solid var(--bg);
+                z-index: 2;
+            }
+            .tr-l1::before {
+                background: var(--gold);
+            }
+            .tr-l2::before {
+                background: var(--coral);
+            }
+            .tr-l3::before {
+                background: var(--purple);
+            }
+            .tr-l4::before {
+                background: var(--blue);
+            }
+            .tr-l5::before {
+                background: var(--teal);
+            }
+            .tr-info {
+                width: 42%;
+                text-align: right;
+            }
+            .tr-bar-side {
+                width: 42%;
+            }
+            .tr-m {
+                font-size: 1rem;
+                font-weight: 500;
+            }
+            .tr-n {
+                font-size: 0.8rem;
+                color: var(--text-muted);
+            }
+            .tr-tag {
+                font-size: 0.7rem;
+                color: var(--gold);
+                font-style: italic;
+            }
+            .tr-bar {
+                height: 26px;
+                background: rgba(255, 255, 255, 0.04);
+                border-radius: 6px;
+                overflow: hidden;
+                display: flex;
+            }
+            .tr-fill {
+                background: linear-gradient(90deg, var(--purple), var(--teal));
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding-right: 0.6rem;
+                font-size: 0.76rem;
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.9);
+                transition: width 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+                white-space: nowrap;
+                width: 0%;
+            }
+
+            /* i ching */
+            .iching-grid {
+                display: grid;
+                grid-template-columns: repeat(8, 1fr);
+                gap: 4px;
+                margin: 1.75rem auto;
+                max-width: 520px;
+            }
+            @media (max-width: 600px) {
+                .iching-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+            .hexagram {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 0.5rem 0.25rem;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.18s;
+                position: relative;
+            }
+            .hexagram:hover {
+                background: var(--bg-card-hover);
+                transform: scale(1.06);
+            }
+            .hexagram.selected {
+                border-color: var(--gold);
+                background: rgba(212, 175, 55, 0.12);
+            }
+            .hexagram.partner {
+                border-color: var(--purple);
+                background: rgba(157, 140, 255, 0.1);
+            }
+            .hexagram.kernel {
+                border-color: var(--teal);
+                background: rgba(93, 202, 165, 0.07);
+            }
+            .hex-lines {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: 2px;
+                margin-bottom: 0.35rem;
+            }
+            .hex-line {
+                height: 3px;
+                border-radius: 1px;
+                display: flex;
+                gap: 3px;
+            }
+            .hex-line.yang {
+                background: var(--gold);
+            }
+            .hex-line.yin .yl {
+                height: 3px;
+                flex: 1;
+                background: var(--gold);
+                border-radius: 1px;
+            }
+            .hex-num {
+                font-size: 0.62rem;
+                color: var(--text-muted);
+                font-family: monospace;
+            }
+            .iching-info {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-left: 3px solid var(--gold);
+                border-radius: 0 12px 12px 0;
+                padding: 1.25rem 1.5rem;
+                margin: 1rem 0;
+                min-height: 80px;
+                font-size: 0.92rem;
+            }
+            .iching-info.hidden {
+                display: none;
+            }
+
+            /* flourishing */
+            .flourishing-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.25rem;
+                margin: 1.75rem 0;
+            }
+            @media (max-width: 680px) {
+                .flourishing-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .fl-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 1.5rem;
+                transition: all 0.22s;
+            }
+            .fl-card:hover {
+                background: var(--bg-card-hover);
+                border-color: rgba(255, 255, 255, 0.12);
+                transform: translateY(-2px);
+            }
+            .fl-icon {
+                font-size: 1.9rem;
+                margin-bottom: 0.75rem;
+            }
+            .fl-card h3 {
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--teal);
+                margin-bottom: 0.6rem;
+            }
+            .fl-card p {
+                font-size: 0.88rem;
+                color: var(--text-muted);
+                margin-bottom: 0;
+            }
+            .anchor-box {
+                background: linear-gradient(135deg, rgba(93, 202, 165, 0.07), rgba(157, 140, 255, 0.07));
+                border: 1px solid rgba(93, 202, 165, 0.2);
+                border-radius: 16px;
+                padding: 2rem;
+                text-align: center;
+                margin: 2.5rem 0;
+            }
+            .anchor-quote {
+                font-size: 1.15rem;
+                font-style: italic;
+                color: var(--text);
+                max-width: 700px;
+                margin: 0 auto 0.75rem;
+                line-height: 1.6;
+            }
+            .anchor-attr {
+                font-size: 0.82rem;
+                color: var(--text-muted);
+            }
+
+            /* footer */
+            footer {
+                border-top: 1px solid var(--border);
+                padding: 3rem 2rem;
+                text-align: center;
+                margin-top: 4rem;
+            }
+            .footer-brand {
+                font-size: 1rem;
+                font-weight: 500;
+                margin-bottom: 0.4rem;
+            }
+            .footer-links {
+                font-size: 0.82rem;
+                color: var(--text-muted);
+            }
+            .footer-links a {
+                color: var(--purple);
+                text-decoration: none;
+            }
+            .footer-links a:hover {
+                text-decoration: underline;
+            }
+            .rabbits {
+                font-size: 1.4rem;
+                margin-top: 1.25rem;
+            }
+            .sep {
+                width: 48px;
+                height: 2px;
+                background: var(--border);
+                margin: 3rem auto;
+                border-radius: 2px;
+            }
+
+            /* tooltip */
+            .tooltip {
+                position: fixed;
+                background: #1e1e2e;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 0.6rem 0.9rem;
+                font-size: 0.8rem;
+                color: var(--text);
+                pointer-events: none;
+                z-index: 1000;
+                max-width: 220px;
+                display: none;
+                line-height: 1.4;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="tooltip" id="tooltip"></div>
+        <div class="container">
+            <!-- HEADER -->
+            <header>
+                <div class="eyebrow">
+                    Ancient Structure &nbsp;&middot;&nbsp; Modern Computation &nbsp;&middot;&nbsp; Future Hardware
+                </div>
+                <h1>
+                    The
+                    <span>Unity Clock</span>
+                </h1>
+                <p class="subtitle">
+                    The tension between addition and multiplication&mdash;the force that makes primes
+                    unpredictable&mdash;has exactly
+                    <strong>4 degrees of freedom</strong>
+                    . From the I&nbsp;Ching to a 92,160-dimensional eigenproblem: the clock has always been ticking. We
+                    just learned to read it.
+                </p>
+                <p class="doi">
+                    Matos (2026) &mdash;
+                    <a href="https://doi.org/10.5281/zenodo.19478727">DOI: 10.5281/zenodo.19478727</a>
+                </p>
+            </header>
+
+            <!-- TIMELINE -->
+            <section id="story">
+                <h2>A 3,000-Year Chain</h2>
+                <div class="intro-box">
+                    This is not just a theorem about matrices. It is the discovery that an ancient symbolic system, a
+                    21st-century algebraic proof, and a patent-pending hardware design are all pointing at the same
+                    four-dimensional structure.
+                    <strong>The Unity Clock was always there.</strong>
+                    Three thousand years of human minds, closing in from different directions.
+                </div>
+                <div class="timeline">
+                    <div class="timeline-entry tl-ancient">
+                        <div class="tl-era">~1000 BCE &mdash; Ancient China</div>
+                        <div class="tl-title">The I Ching Discovers the Base-2 Floor</div>
+                        <div class="tl-body">
+                            Sixty-four hexagrams&mdash;6-bit binary strings&mdash;governed by two operations: &sigma;
+                            (flip all lines, Yin&nbsp;&harr;&nbsp;Yang) and &tau; (reverse the hexagram,
+                            Heaven&nbsp;&harr;&nbsp;Earth). The ancients could not have known about coprime residue
+                            lattices. But they encoded the exact algebraic structure that produces the Unity
+                            Clock&rsquo;s universal phase transition. The I Ching is the base-2, floor-6 primeform:
+                            2⁶ = 64 states,
+                            <span style="white-space: nowrap">
+                                α
+                                <sub>c</sub>
+                            </span>
+                             = 1.2380. Error from the universal constant:
+                            <strong>0.05%</strong>
+                            . Three thousand years of empirical evidence, disguised as divination.
+                        </div>
+                    </div>
+                    <div class="timeline-entry tl-ancient">
+                        <div class="tl-era">~300 BCE &mdash; Ancient Greece</div>
+                        <div class="tl-title">Euclid Defines the Structure</div>
+                        <div class="tl-body">
+                            Euclid&rsquo;s algorithm for the greatest common divisor. The proof that primes are
+                            infinite. The additive and multiplicative natures of integers are first separated and
+                            examined. The coprime residue lattice that the Unity Clock inhabits is Euclid&rsquo;s
+                            inheritance.
+                        </div>
+                    </div>
+                    <div class="timeline-entry tl-modern">
+                        <div class="tl-era">1859 &mdash; Bernhard Riemann</div>
+                        <div class="tl-title">The Hypothesis That Remains Unsolved</div>
+                        <div class="tl-body">
+                            Riemann formalizes the central tension: primes are defined multiplicatively, distributed
+                            additively. The commutator C&thinsp;=&thinsp;[D,&thinsp;P
+                            <sub>&tau;</sub>
+                            ] is a finite-dimensional discrete analog of the Riemann zeta function&rsquo;s failure to
+                            align these two structures. The Unity Clock measures what Riemann could only study
+                            analytically.
+                        </div>
+                    </div>
+                    <div class="timeline-entry tl-modern">
+                        <div class="tl-era">April 8, 2026 &mdash; Antonio Matos</div>
+                        <div class="tl-title">The Effective Rank Theorem</div>
+                        <div class="tl-body">
+                            The commutator C&thinsp;=&thinsp;[D
+                            <sub>sym</sub>
+                            ,&thinsp;P
+                            <sub>&tau;</sub>
+                            ] on any squarefree coprime lattice&mdash;no matter how large&mdash;concentrates 98%+ of its
+                            energy in exactly 4 singular modes. Verified from n&thinsp;=&thinsp;8 to
+                            n&thinsp;=&thinsp;92,160 (five orders of magnitude). A 10
+                            <sup>12</sup>
+                            -fold computational reduction follows immediately.
+                        </div>
+                    </div>
+                    <div class="timeline-entry tl-future">
+                        <div class="tl-era">Now &rarr; Near Future</div>
+                        <div class="tl-title">The Arithmetic Qubit</div>
+                        <div class="tl-body">
+                            Hardware that simulates prime dynamics does not need 92,160 qubits. It needs 4. The
+                            Arithmetic Qubit&mdash;a standard CMOS device implementing the 4-mode effective
+                            system&mdash;is now provably sufficient. Provisional patent 64/031,440 is filed. The Unity
+                            Clock goes from theorem to silicon.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="sep"></div>
+
+            <!-- INTERACTIVE CLOCK -->
+            <section id="clock">
+                <h2>The Clock Face &mdash; Synchronize the Tower</h2>
+                <p>
+                    Select a primorial level. The clock face shows the coprime residues and their &tau;-partners
+                    connected by arcs&mdash;the multiplicative inversions the Unity Clock tracks.
+                    <strong style="color: var(--gold)">Gold dots</strong>
+                    are self-inverse residues (they sit in ker&thinsp;C&mdash;zero shear).
+                    <strong style="color: var(--teal)">Teal dots</strong>
+                    are generic coprime pairs. The tent function shows additive distance.
+                    <strong>The tension between these two is exactly what the 4 modes capture.</strong>
+                </p>
+                <div class="controls">
+                    <button class="ctrl-btn active" data-m="30" onclick="setLevel(30)">m = 30</button>
+                    <button class="ctrl-btn" data-m="210" onclick="setLevel(210)">m = 210</button>
+                    <button class="ctrl-btn" data-m="2310" onclick="setLevel(2310)">m = 2,310</button>
+                    <button class="ctrl-btn" data-m="30030" onclick="setLevel(30030)">m = 30,030</button>
+                    <button class="ctrl-btn" data-m="510510" onclick="setLevel(510510)">m = 510,510</button>
+                </div>
+                <div class="demo-grid">
+                    <div class="panel">
+                        <div class="panel-title">Coprime Residue Ring</div>
+                        <svg id="clockSvg" viewBox="0 0 260 260">
+                            <defs>
+                                <radialGradient id="glow-grad" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#9d8cff" stop-opacity="0.15" />
+                                    <stop offset="100%" stop-color="#9d8cff" stop-opacity="0" />
+                                </radialGradient>
+                            </defs>
+                            <circle cx="130" cy="130" r="120" fill="url(#glow-grad)" />
+                        </svg>
+                        <div class="clock-meta">
+                            <strong id="clockN">?</strong>
+                            <br />
+                            <span id="clockLabel" style="font-size: 0.78rem"></span>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">Additive Distance &mdash; The Tent Function</div>
+                        <svg id="tentSvg" viewBox="0 0 300 130"></svg>
+                        <div class="fourier-row">
+                            <div class="fbar-wrap">
+                                <div class="fbar-track"><div class="fbar-fill" style="height: 100%"></div></div>
+                                <div class="fbar-label">k=1</div>
+                                <div class="fbar-val">1/&pi;&sup2;</div>
+                            </div>
+                            <div class="fbar-wrap">
+                                <div class="fbar-track"><div class="fbar-fill" style="height: 11%"></div></div>
+                                <div class="fbar-label">k=3</div>
+                                <div class="fbar-val">1/9&pi;&sup2;</div>
+                            </div>
+                            <div class="fbar-wrap">
+                                <div class="fbar-track"><div class="fbar-fill" style="height: 4%"></div></div>
+                                <div class="fbar-label">k=5</div>
+                                <div class="fbar-val">1/25&pi;&sup2;</div>
+                            </div>
+                            <div class="fbar-wrap">
+                                <div class="fbar-track"><div class="fbar-fill" style="height: 2%"></div></div>
+                                <div class="fbar-label">k=7</div>
+                                <div class="fbar-val">1/49&pi;&sup2;</div>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.75rem; margin-bottom: 0">
+                            The tent function&rsquo;s 1/k&sup2; Fourier decay means k=1 holds
+                            <strong style="color: var(--text)">81&times; more energy</strong>
+                            than k=3. Two harmonics &times; two &tau;-parities = 4 modes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- energy panel -->
+                <div class="panel" style="margin-top: 0">
+                    <div class="panel-title">Energy Collapse &mdash; 4 Modes vs the Rest</div>
+                    <div class="energy-bar-outer">
+                        <div class="e-main" id="eMain" style="width: 98.6%">4 modes: 98.6%</div>
+                        <div class="e-rest" id="eRest" style="width: 1.4%">1.4%</div>
+                    </div>
+                    <div class="stats-row">
+                        <div>
+                            <div class="stat-val">4</div>
+                            <div class="stat-desc">modes needed</div>
+                        </div>
+                        <div>
+                            <div class="stat-val" id="statPct">98.6%</div>
+                            <div class="stat-desc">energy captured</div>
+                        </div>
+                        <div>
+                            <div class="stat-val" id="statComp">57,600×</div>
+                            <div class="stat-desc">compression</div>
+                        </div>
+                        <div>
+                            <div class="stat-val" id="statDim">480</div>
+                            <div class="stat-desc">dimensions &rarr; 4</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="sep"></div>
+
+            <!-- FOUR MODES -->
+            <section id="modes">
+                <h2>The Four Modes &mdash; Click to Illuminate</h2>
+                <div class="highlight-box">
+                    <div class="big-eq">
+                        <span class="n">2</span>
+                        harmonics &times;
+                        <span class="n">2</span>
+                        &tau;-parities =
+                        <span class="n">4</span>
+                        modes
+                    </div>
+                    <div class="highlight-sub">
+                        k=1 symmetric &middot; k=1 antisymmetric &middot; k=3 symmetric &middot; k=3
+                        antisymmetric&mdash; these four modes carry &gt;98% of all commutator energy, regardless of
+                        lattice size.
+                    </div>
+                </div>
+                <div class="modes-grid">
+                    <div class="mode-card m1" onclick="lightMode(0)">
+                        <div class="mode-sigma">
+                            &sigma;
+                            <sub>0</sub>
+                        </div>
+                        <div class="mode-parity">&tau; = +1, k=1</div>
+                        <div class="mode-label">Symmetric &middot; Forward</div>
+                        <div class="mode-energy-bar"><div class="mode-energy-fill" style="width: 49.3%"></div></div>
+                        <div style="font-size: 0.7rem; color: var(--purple); margin-top: 0.35rem">~49.3% energy</div>
+                    </div>
+                    <div class="mode-card m2" onclick="lightMode(1)">
+                        <div class="mode-sigma">
+                            &sigma;
+                            <sub>1</sub>
+                        </div>
+                        <div class="mode-parity">&tau; = &minus;1, k=1</div>
+                        <div class="mode-label">Antisymmetric &middot; Forward</div>
+                        <div class="mode-energy-bar"><div class="mode-energy-fill" style="width: 49.3%"></div></div>
+                        <div style="font-size: 0.7rem; color: var(--teal); margin-top: 0.35rem">~49.3% energy</div>
+                    </div>
+                    <div class="mode-card m3" onclick="lightMode(2)">
+                        <div class="mode-sigma">
+                            &sigma;
+                            <sub>2</sub>
+                        </div>
+                        <div class="mode-parity">&tau; = +1, k=3</div>
+                        <div class="mode-label">Symmetric &middot; Overtone</div>
+                        <div class="mode-energy-bar"><div class="mode-energy-fill" style="width: 0.6%"></div></div>
+                        <div style="font-size: 0.7rem; color: var(--coral); margin-top: 0.35rem">~0.6% energy</div>
+                    </div>
+                    <div class="mode-card m4" onclick="lightMode(3)">
+                        <div class="mode-sigma">
+                            &sigma;
+                            <sub>3</sub>
+                        </div>
+                        <div class="mode-parity">&tau; = &minus;1, k=3</div>
+                        <div class="mode-label">Antisymmetric &middot; Overtone</div>
+                        <div class="mode-energy-bar"><div class="mode-energy-fill" style="width: 0.6%"></div></div>
+                        <div style="font-size: 0.7rem; color: var(--blue); margin-top: 0.35rem">~0.6% energy</div>
+                    </div>
+                </div>
+                <div id="modeInfo" class="intro-box" style="min-height: 120px; border-left-color: var(--teal)">
+                    <span style="color: var(--text-muted); font-style: italic">
+                        Click a mode card above to learn more.
+                    </span>
+                </div>
+            </section>
+
+            <div class="sep"></div>
+
+            <!-- TOWER -->
+            <section id="tower">
+                <h2>The Primorial Tower &mdash; One Constant Rules Them All</h2>
+                <p>
+                    As we add each prime floor&mdash;2, 3, 5, 7, 11, 13, 17&mdash;the lattice dimension explodes
+                    exponentially. The effective rank stays at
+                    <strong>4</strong>
+                    . The compression ratio grows by orders of magnitude. The clock never loses its beat.
+                </p>
+                <div class="tower-wrap">
+                    <div class="tower-spine"></div>
+                    <div class="tower-row tr-l1">
+                        <div class="tr-info">
+                            <div class="tr-m">m = 30</div>
+                            <div class="tr-n">n = 8 coprime residues</div>
+                            <div class="tr-tag">
+                                I Ching cousin: 2⁶=64,
+                                <span style="white-space: nowrap">
+                                    α
+                                    <sub>c</sub>
+                                </span>
+                                =1.2380
+                            </div>
+                        </div>
+                        <div class="tr-bar-side">
+                            <div class="tr-bar"><div class="tr-fill" data-w="100">100%</div></div>
+                        </div>
+                    </div>
+                    <div class="tower-row tr-l2">
+                        <div class="tr-info">
+                            <div class="tr-m">m = 210</div>
+                            <div class="tr-n">n = 48 coprime residues</div>
+                        </div>
+                        <div class="tr-bar-side">
+                            <div class="tr-bar"><div class="tr-fill" data-w="99.99">99.99%</div></div>
+                        </div>
+                    </div>
+                    <div class="tower-row tr-l3">
+                        <div class="tr-info">
+                            <div class="tr-m">m = 2,310</div>
+                            <div class="tr-n">n = 480 coprime residues</div>
+                        </div>
+                        <div class="tr-bar-side">
+                            <div class="tr-bar"><div class="tr-fill" data-w="98.6">98.6%</div></div>
+                        </div>
+                    </div>
+                    <div class="tower-row tr-l4">
+                        <div class="tr-info">
+                            <div class="tr-m">m = 30,030</div>
+                            <div class="tr-n">n = 5,760 coprime residues</div>
+                        </div>
+                        <div class="tr-bar-side">
+                            <div class="tr-bar"><div class="tr-fill" data-w="98.6">98.6%</div></div>
+                        </div>
+                    </div>
+                    <div class="tower-row tr-l5">
+                        <div class="tr-info">
+                            <div class="tr-m">m = 510,510</div>
+                            <div class="tr-n">n = 92,160 coprime residues</div>
+                            <div class="tr-tag">15 sec &middot; consumer laptop &middot; 35.6 MB RAM</div>
+                        </div>
+                        <div class="tr-bar-side">
+                            <div class="tr-bar"><div class="tr-fill" data-w="99.77">99.77%</div></div>
+                        </div>
+                    </div>
+                </div>
+                <p style="text-align: center; color: var(--text-muted); font-style: italic">
+                    Eight dimensions &rarr; 92,160 dimensions. Effective rank: always 4.
+                </p>
+            </section>
+
+            <div class="sep"></div>
+
+            <!-- I CHING -->
+            <section id="iching">
+                <h2>The I Ching &mdash; 3,000 Years of Embedded Mathematics</h2>
+                <div class="intro-box">
+                    <strong>The most striking experimental result:</strong>
+                    the 64 hexagrams of the I Ching, with &sigma;&thinsp;=&thinsp;bitwise complement (Yin&harr;Yang) and
+                    &tau;&thinsp;=&thinsp;hexagram reversal (Heaven&harr;Earth), produce a phase transition at
+                    <span style="white-space: nowrap">
+                        &alpha;
+                        <sub>c</sub>
+                    </span>
+                    &thinsp;=&thinsp;1.2380. The universal constant is &radic;(135/88)&thinsp;=&thinsp;1.23858.
+                    <strong>Error: 0.05%.</strong>
+                    The ancients encoded the simplest primeform&mdash;base 2, floor 6&mdash;without knowing it was
+                    mathematics at all. They were not being mystical. They were doing empirical science on the number
+                    64.
+                </div>
+                <p>
+                    Click any hexagram. Its
+                    <strong style="color: var(--purple)">&tau;-partner</strong>
+                    (bit-reversal, Heaven&harr;Earth) lights up in purple.
+                    <strong style="color: var(--teal)">Teal-bordered hexagrams</strong>
+                    are self-inverse under &tau;&mdash;they sit in ker(C), contribute zero tension. The other 56 form 28
+                    &tau;-pairs, each contributing one quantum of commutator shear that the Unity Clock measures.
+                </p>
+                <div class="iching-grid" id="ichingGrid"></div>
+                <div class="iching-info hidden" id="ichingInfo"></div>
+                <div class="highlight-box" style="margin-top: 2rem">
+                    <div class="big-eq" style="font-size: 1.4rem">
+                        2⁶ =
+                        <span class="n">64</span>
+                        &nbsp;|&nbsp;
+                        <span style="white-space: nowrap">
+                            &alpha;
+                            <sub>c</sub>
+                        </span>
+                        =
+                        <span class="n">1.2380</span>
+                        &nbsp;|&nbsp; universal =
+                        <span class="n">1.23858</span>
+                        &nbsp;|&nbsp; error =
+                        <span class="n">0.05%</span>
+                    </div>
+                    <div class="highlight-sub">
+                        They did not discover it. They built software for a computer they did not know existed. The
+                        clock was running. They were just keeping time.
+                    </div>
+                </div>
+            </section>
+
+            <div class="sep"></div>
+
+            <!-- HUMAN FLOURISHING -->
+            <section id="flourishing">
+                <h2>What This Means for Human Flourishing</h2>
+                <p>
+                    The Unity Clock is not just a theorem about matrices. It is a statement about the
+                    <strong>structure of complexity itself</strong>
+                    &mdash;and it carries consequences that reach from ancient symbolic wisdom to modern drug discovery
+                    to the hardware that will run tomorrow&rsquo;s AI. Every human who worked on this problem&mdash;from
+                    Fuxi to Euclid to Riemann to Matos&mdash;extended the chain. The chain is the technology. This work
+                    is just the newest link.
+                </p>
+                <div class="flourishing-grid">
+                    <div class="fl-card">
+                        <div class="fl-icon">&#x4E2D;&#x6587;</div>
+                        <h3>The I Ching Was Right</h3>
+                        <p>
+                            Three thousand years ago, China encoded the simplest primeform: 64 binary states, two
+                            operations, one phase transition. The I Ching was not mysticism. It was an early experiment
+                            in the structure of numbers&mdash;an experiment that the Unity Clock vindicates
+                            quantitatively, to 0.05%.
+                        </p>
+                    </div>
+                    <div class="fl-card">
+                        <div class="fl-icon">&#x1F9E9;</div>
+                        <h3>Complexity Has a Finite Heartbeat</h3>
+                        <p>
+                            The primes seemed governed by an n-dimensional system where n&rarr;&infin;. The Unity Clock
+                            proves the effective complexity is always 4. The hardest problems may have simple
+                            hearts&mdash;and finding that heart is the whole game. This is a template for every hard
+                            problem, not just prime numbers.
+                        </p>
+                    </div>
+                    <div class="fl-card">
+                        <div class="fl-icon">&#x26A1;</div>
+                        <h3>Computation Gets Cheaper</h3>
+                        <p>
+                            A 92,160-dimensional eigenproblem solved in 15 seconds on a laptop, using 35.6 MB of RAM
+                            instead of 127 GB&mdash;a 3,641&times; memory savings, a 5&times;10
+                            <sup>8</sup>
+                            compression ratio. The same reduction principle applies anywhere the addition-multiplication
+                            tension governs computation. That is a very large territory.
+                        </p>
+                    </div>
+                    <div class="fl-card">
+                        <div class="fl-icon">&#x1F3E5;</div>
+                        <h3>Cancer as a Unity Clock</h3>
+                        <p>
+                            Cancer hallmarks encode a primeform structure. The phase transition at
+                            <span style="white-space: nowrap">
+                                &alpha;
+                                <sub>c</sub>
+                            </span>
+                            separates coherent tumors from fragmented ones. Per-patient qubit coordinates derived from
+                            standard NGS panels&mdash;zero additional cost&mdash;predict survival differentials up to
+                            14.5 months. The arithmetic structure of numbers turns out to be the arithmetic structure of
+                            disease.
+                        </p>
+                    </div>
+                    <div class="fl-card">
+                        <div class="fl-icon">&#x1F52E;</div>
+                        <h3>Alignment by Geometry, Not Rules</h3>
+                        <p>
+                            A system whose values and actions commute&mdash;whose IS and DOES align&mdash;sits below
+                            <span style="white-space: nowrap">
+                                &alpha;
+                                <sub>c</sub>
+                            </span>
+                            . When drift accumulates past the universal threshold, the geometry demands reorganization.
+                            This is not a rule imposed from outside. It is a law of the structure itself. The Unity
+                            Clock is an alignment detector.
+                        </p>
+                    </div>
+                    <div class="fl-card">
+                        <div class="fl-icon">&#x1F517;</div>
+                        <h3>One Link in the Chain</h3>
+                        <p>
+                            Fuxi drew the 8 trigrams. King Wen arranged the 64 hexagrams. Euclid proved primes infinite.
+                            Riemann wrote his hypothesis. Matos (2026) named the 4 modes. You are reading this now.
+                            Every link in this chain is a human flourishing. The chain of understanding is the only
+                            technology that truly compounds without limit.
+                        </p>
+                    </div>
+                </div>
+                <div class="anchor-box">
+                    <div class="anchor-quote">
+                        &ldquo;The tension between the additive and multiplicative structures of the integers&mdash;the
+                        tension that makes prime numbers hard to predict&mdash;has an intrinsic dimensionality of 4.
+                        Everything else is echo.&rdquo;
+                    </div>
+                    <div class="anchor-attr">
+                        &mdash; Matos (2026),
+                        <em>The Unity Clock</em>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer>
+                <div class="footer-brand">Fancyland LLC &mdash; Lattice OS</div>
+                <div class="footer-links">
+                    <a href="https://github.com/fancyland-llc/unity-clock-effective-rank">GitHub (Unity Clock)</a>
+                    &nbsp;&middot;&nbsp;
+                    <a href="https://github.com/fancyland-llc/arithmetic-black-hole">GitHub (Arithmetic Black Hole)</a>
+                    &nbsp;&middot;&nbsp;
+                    <a href="https://doi.org/10.5281/zenodo.19478727">Whitepaper (PDF)</a>
+                    &nbsp;&middot;&nbsp;
+                    <a href="https://orcid.org/0009-0002-0722-3752">ORCID</a>
+                </div>
+                <div class="rabbits">&#x1F407;&#x1F407;&#x1F407;&#x1F407;</div>
+                <p style="margin-top: 1rem; font-size: 0.78rem; color: var(--text-muted)">April 2026</p>
+            </footer>
+        </div>
+        <!-- /container -->
+
+        <script>
+            "use strict";
+
+            // helpers
+            function gcd(a, b) {
+                return b === 0 ? a : gcd(b, a % b);
+            }
+            function coprimes(m) {
+                var o = [];
+                for (var i = 1; i < m; i++) if (gcd(i, m) === 1) o.push(i);
+                return o;
+            }
+            function modInv(a, m) {
+                // Extended Euclidean - O(log m)
+                var or = a,
+                    r = m,
+                    os = 1,
+                    s = 0;
+                while (r !== 0) {
+                    var q = Math.floor(or / r);
+                    var t = r;
+                    r = or - q * r;
+                    or = t;
+                    t = s;
+                    s = os - q * s;
+                    os = t;
+                }
+                return ((os % m) + m) % m;
+            }
+            function bitRev(n, bits) {
+                var r = 0;
+                for (var i = 0; i < bits; i++) {
+                    r = (r << 1) | (n & 1);
+                    n >>= 1;
+                }
+                return r;
+            }
+
+            // tooltip
+            var tip = document.getElementById("tooltip");
+            function showTip(e, t) {
+                tip.textContent = t;
+                tip.style.display = "block";
+                moveTip(e);
+            }
+            function moveTip(e) {
+                tip.style.left = e.clientX + 12 + "px";
+                tip.style.top = e.clientY + 12 + "px";
+            }
+            function hideTip() {
+                tip.style.display = "none";
+            }
+
+            // data
+            var LV = {
+                30: { n: 8, primes: [2, 3, 5], energy: 100, comp: "16\u00d7", dim: 8 },
+                210: { n: 48, primes: [2, 3, 5, 7], energy: 99.99, comp: "576\u00d7", dim: 48 },
+                2310: { n: 480, primes: [2, 3, 5, 7, 11], energy: 98.6, comp: "57,600\u00d7", dim: 480 },
+                30030: { n: 5760, primes: [2, 3, 5, 7, 11, 13], energy: 98.6, comp: "8.3M\u00d7", dim: 5760 },
+                510510: {
+                    n: 92160,
+                    primes: [2, 3, 5, 7, 11, 13, 17],
+                    energy: 99.77,
+                    comp: "5\u00d710\u2078",
+                    dim: 92160,
+                },
+            };
+
+            // clock
+            function drawClock(m) {
+                var svg = document.getElementById("clockSvg");
+                var cx = 130,
+                    cy = 130,
+                    R = 110,
+                    lvl = LV[m];
+                var html = '<circle cx="' + cx + '" cy="' + cy + '" r="120" fill="url(#glow-grad)"/>';
+                if (m > 2310) {
+                    var n = lvl.n,
+                        show = Math.min(n, 120);
+                    html +=
+                        '<circle cx="' +
+                        cx +
+                        '" cy="' +
+                        cy +
+                        '" r="' +
+                        R +
+                        '" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>';
+                    for (var i = 0; i < show; i++) {
+                        var a = (i / show) * 2 * Math.PI - Math.PI / 2;
+                        var x = cx + R * Math.cos(a),
+                            y = cy + R * Math.sin(a);
+                        html +=
+                            '<circle cx="' +
+                            x.toFixed(1) +
+                            '" cy="' +
+                            y.toFixed(1) +
+                            '" r="2.5" fill="#5dcaa5" opacity="0.55"/>';
+                    }
+                    html +=
+                        '<text x="' +
+                        cx +
+                        '" y="' +
+                        (cy - 12) +
+                        '" text-anchor="middle" fill="#9a9a9a" font-size="11">m=' +
+                        m.toLocaleString() +
+                        "</text>";
+                    html +=
+                        '<text x="' +
+                        cx +
+                        '" y="' +
+                        (cy + 8) +
+                        '" text-anchor="middle" fill="#5dcaa5" font-size="13">n=' +
+                        n.toLocaleString() +
+                        "</text>";
+                    html +=
+                        '<text x="' +
+                        cx +
+                        '" y="' +
+                        (cy + 24) +
+                        '" text-anchor="middle" fill="#9a9a9a" font-size="8">schematic (' +
+                        show +
+                        " of " +
+                        n.toLocaleString() +
+                        ")</text>";
+                } else {
+                    var clist = coprimes(m);
+                    html +=
+                        '<circle cx="' +
+                        cx +
+                        '" cy="' +
+                        cy +
+                        '" r="' +
+                        R +
+                        '" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>';
+                    for (var ci = 0; ci < clist.length; ci++) {
+                        var res = clist[ci],
+                            inv = modInv(res, m);
+                        if (res < inv) {
+                            var a1 = (res / m) * 2 * Math.PI - Math.PI / 2,
+                                a2 = (inv / m) * 2 * Math.PI - Math.PI / 2;
+                            var x1 = cx + R * Math.cos(a1),
+                                y1 = cy + R * Math.sin(a1),
+                                x2 = cx + R * Math.cos(a2),
+                                y2 = cy + R * Math.sin(a2);
+                            var mx2 = (x1 + x2) / 2,
+                                my2 = (y1 + y2) / 2,
+                                len = Math.hypot(x2 - x1, y2 - y1);
+                            var curve = Math.min(len * 0.28, 42),
+                                nx = -(y2 - y1) / len,
+                                ny = (x2 - x1) / len;
+                            var dir = (mx2 - cx) * nx + (my2 - cy) * ny > 0 ? -1 : 1;
+                            var cpx = mx2 + dir * curve * nx,
+                                cpy = my2 + dir * curve * ny;
+                            html +=
+                                '<path d="M' +
+                                x1.toFixed(1) +
+                                "," +
+                                y1.toFixed(1) +
+                                " Q" +
+                                cpx.toFixed(1) +
+                                "," +
+                                cpy.toFixed(1) +
+                                " " +
+                                x2.toFixed(1) +
+                                "," +
+                                y2.toFixed(1) +
+                                '" fill="none" stroke="rgba(157,140,255,0.22)" stroke-width="1.2"/>';
+                        }
+                    }
+                    for (var ci = 0; ci < clist.length; ci++) {
+                        var res = clist[ci],
+                            inv = modInv(res, m);
+                        var ang = (res / m) * 2 * Math.PI - Math.PI / 2;
+                        var xx = cx + R * Math.cos(ang),
+                            yy = cy + R * Math.sin(ang);
+                        var self = res === inv,
+                            col = self ? "#d4af37" : "#5dcaa5";
+                        var tiptxt = self ? "r=" + res + " self-inverse (ker C)" : "r=" + res + " \u2194 " + inv;
+                        html +=
+                            '<circle cx="' +
+                            xx.toFixed(1) +
+                            '" cy="' +
+                            yy.toFixed(1) +
+                            '" r="' +
+                            (self ? 5.5 : 4.2) +
+                            '" fill="' +
+                            col +
+                            '" opacity="0.92" onmouseover="showTip(event,\'' +
+                            tiptxt +
+                            '\')" onmousemove="moveTip(event)" onmouseout="hideTip()"/>';
+                    }
+                    html +=
+                        '<text x="' +
+                        cx +
+                        '" y="' +
+                        (cy - 10) +
+                        '" text-anchor="middle" fill="#9a9a9a" font-size="10">m=' +
+                        m +
+                        "</text>";
+                    html +=
+                        '<text x="' +
+                        cx +
+                        '" y="' +
+                        (cy + 8) +
+                        '" text-anchor="middle" fill="#5dcaa5" font-size="13">n=' +
+                        clist.length +
+                        "</text>";
+                }
+                svg.innerHTML =
+                    '<defs><radialGradient id="glow-grad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#9d8cff" stop-opacity="0.15"/><stop offset="100%" stop-color="#9d8cff" stop-opacity="0"/></radialGradient></defs>' +
+                    html;
+            }
+
+            // tent
+            function drawTent(m) {
+                var svg = document.getElementById("tentSvg");
+                var W = 300,
+                    H = 130,
+                    pad = 18,
+                    pts = [],
+                    h1 = [],
+                    h3 = [];
+                for (var x = 0; x <= 200; x++) {
+                    var t = x / 200,
+                        r = t * m,
+                        d = Math.min(r, m - r);
+                    var px = pad + t * (W - 2 * pad),
+                        py = H - pad - (d / (m / 2)) * (H - 2 * pad - 10);
+                    pts.push(px.toFixed(1) + "," + py.toFixed(1));
+                    var sc = (H - 2 * pad - 10) / 2,
+                        base = H / 2;
+                    h1.push(px.toFixed(1) + "," + (base - Math.cos(2 * Math.PI * t) * sc * 0.55).toFixed(1));
+                    h3.push(px.toFixed(1) + "," + (base - (Math.cos(6 * Math.PI * t) / 9) * sc * 0.55).toFixed(1));
+                }
+                svg.innerHTML =
+                    '<defs><linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9d8cff"/><stop offset="50%" stop-color="#5dcaa5"/><stop offset="100%" stop-color="#9d8cff"/></linearGradient></defs>' +
+                    '<line x1="' +
+                    pad +
+                    '" y1="' +
+                    (H - pad) +
+                    '" x2="' +
+                    (W - pad) +
+                    '" y2="' +
+                    (H - pad) +
+                    '" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>' +
+                    '<line x1="' +
+                    pad +
+                    '" y1="' +
+                    pad +
+                    '" x2="' +
+                    pad +
+                    '" y2="' +
+                    (H - pad) +
+                    '" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>' +
+                    '<polyline points="' +
+                    h1.join(" ") +
+                    '" fill="none" stroke="rgba(157,140,255,0.18)" stroke-width="1" stroke-dasharray="4,3"/>' +
+                    '<polyline points="' +
+                    h3.join(" ") +
+                    '" fill="none" stroke="rgba(240,153,123,0.18)" stroke-width="1" stroke-dasharray="2,3"/>' +
+                    '<polyline points="' +
+                    pts.join(" ") +
+                    '" fill="none" stroke="url(#tg)" stroke-width="2.5"/>' +
+                    '<text x="' +
+                    W / 2 +
+                    '" y="' +
+                    (H - 3) +
+                    '" text-anchor="middle" fill="#666" font-size="8">residue \u2192</text>' +
+                    '<text x="' +
+                    (W - pad) +
+                    '" y="' +
+                    (pad + 10) +
+                    '" text-anchor="end" fill="rgba(157,140,255,0.6)" font-size="7">k=1</text>' +
+                    '<text x="' +
+                    (W - pad) +
+                    '" y="' +
+                    (pad + 20) +
+                    '" text-anchor="end" fill="rgba(240,153,123,0.6)" font-size="7">k=3</text>';
+            }
+
+            // set level
+            function setLevel(m) {
+                var d = LV[m];
+                document.querySelectorAll(".ctrl-btn").forEach(function (b) {
+                    var val = b.getAttribute("data-m");
+                    b.classList.toggle("active", val == m);
+                });
+                drawClock(m);
+                drawTent(m);
+                var pct = d.energy,
+                    rest = parseFloat((100 - pct).toFixed(2));
+                document.getElementById("eMain").style.width = pct + "%";
+                document.getElementById("eMain").textContent = "4 modes: " + pct + "%";
+                document.getElementById("eRest").style.width = rest + "%";
+                document.getElementById("eRest").textContent = rest + "%";
+                document.getElementById("statPct").textContent = pct + "%";
+                document.getElementById("statComp").textContent = d.comp;
+                document.getElementById("statDim").textContent = d.n.toLocaleString();
+                document.getElementById("clockN").textContent = d.n.toLocaleString() + " coprime residues";
+                document.getElementById("clockLabel").textContent =
+                    "m = " + m.toLocaleString() + " = " + d.primes.join(" \xd7 ");
+            }
+
+            // four modes
+            var MD = [
+                {
+                    name: "\u03c3\u2080 \u2014 Symmetric, Forward (k=1, \u03c4=+1)",
+                    body: 'The dominant mode. The k=1 (fundamental) harmonic of the tent function, in the \u03c4-symmetric (+1) eigenspace. Carries ~49.3% of all commutator energy. This is the "pure addition" face of the commutator \u2014 the part that looks like a smooth wave on the ring.',
+                },
+                {
+                    name: "\u03c3\u2081 \u2014 Antisymmetric, Forward (k=1, \u03c4=\u22121)",
+                    body: "Degenerate partner of \u03c3\u2080, same singular value. The k=1 harmonic in the \u03c4-antisymmetric (\u22121) eigenspace. Carries ~49.3% of all energy. Together \u03c3\u2080 and \u03c3\u2081 carry 98.6% using only two directions. The pairing reflects the two ways the commutator maps \u03c4-even states to \u03c4-odd states and back.",
+                },
+                {
+                    name: "\u03c3\u2082 \u2014 Symmetric, Overtone (k=3, \u03c4=+1)",
+                    body: "The first overtone. The k=3 harmonic (energy 1/9 of k=1 by the 1/k\u00b2 law) in the \u03c4-symmetric space. Carries ~0.6% of total energy \u2014 81\u00d7 weaker than \u03c3\u2080. Present but small: it is the reason the 4-mode total hits 98.6% rather than 99.5%.",
+                },
+                {
+                    name: "\u03c3\u2083 \u2014 Antisymmetric, Overtone (k=3, \u03c4=\u22121)",
+                    body: "The fourth mode. Degenerate partner of \u03c3\u2082 in the \u03c4-antisymmetric space. Also ~0.6%. Together modes \u03c3\u2082 and \u03c3\u2083 bring the 4-mode total above 99%. All higher harmonics (k=5,7,...) contribute the remaining fraction, and their energy vanishes as 1/k\u2074 \u2014 making them invisible at any lattice size.",
+                },
+            ];
+            var _lit = -1;
+            function lightMode(i) {
+                document.querySelectorAll(".mode-card").forEach(function (c, j) {
+                    c.classList.toggle("lit", j === i && _lit !== i);
+                });
+                var info = document.getElementById("modeInfo");
+                if (_lit === i) {
+                    _lit = -1;
+                    info.innerHTML =
+                        '<span style="color:var(--text-muted);font-style:italic">Click a mode card above to learn more.</span>';
+                    return;
+                }
+                _lit = i;
+                info.innerHTML = '<strong style="font-size:.95rem">' + MD[i].name + "</strong><br><br>" + MD[i].body;
+            }
+
+            // i ching
+            var NAMES = [
+                "Force",
+                "Field",
+                "Sprouting",
+                "Enveloping",
+                "Attending",
+                "Arguing",
+                "Leading",
+                "Grouping",
+                "Small Tending",
+                "Treading",
+                "Pervading",
+                "Obstruction",
+                "Concording",
+                "Greatness",
+                "Humbling",
+                "Providing",
+                "Following",
+                "Corruption",
+                "Nearing",
+                "Viewing",
+                "Gnawing Through",
+                "Adorning",
+                "Stripping",
+                "Return",
+                "Without Embroiling",
+                "Great Taming",
+                "Swallowing",
+                "Great Excess",
+                "The Gorge",
+                "Radiance",
+                "Conjoining",
+                "Persevering",
+                "Retiring",
+                "Great Power",
+                "Advancing",
+                "Clouding",
+                "The Family",
+                "Diverging",
+                "Limping",
+                "Relieving",
+                "Diminishing",
+                "Augmenting",
+                "Parting",
+                "Coming to Meet",
+                "Clustering",
+                "Rising",
+                "Confining",
+                "The Well",
+                "Revolution",
+                "The Cauldron",
+                "Shake",
+                "Keeping Still",
+                "Developing",
+                "Young Lady",
+                "Abundance",
+                "Wanderer",
+                "Subtlety",
+                "Open",
+                "Dispersing",
+                "Inner Truth",
+                "Small Excess",
+                "Completion",
+                "Before Completion",
+                "Force (alt)",
+            ];
+
+            function buildGrid() {
+                var g = document.getElementById("ichingGrid"),
+                    html = "";
+                var kset = new Set();
+                for (var i = 0; i < 64; i++) if (bitRev(i, 6) === i) kset.add(i);
+                for (var i = 0; i < 64; i++) {
+                    var lines = '<div class="hex-lines">';
+                    for (var b = 0; b < 6; b++) {
+                        var yang = ((i >> b) & 1) === 1;
+                        lines += yang
+                            ? '<div class="hex-line yang"></div>'
+                            : '<div class="hex-line yin"><div class="yl"></div><div class="yl"></div></div>';
+                    }
+                    lines += "</div>";
+                    var cls = kset.has(i) ? " kernel" : "";
+                    var nm = NAMES[i] || "H" + i;
+                    html +=
+                        '<div class="hexagram' +
+                        cls +
+                        '" id="hx' +
+                        i +
+                        '" onclick="selHex(' +
+                        i +
+                        ')" onmouseover="showTip(event,\'' +
+                        nm +
+                        '\')" onmousemove="moveTip(event)" onmouseout="hideTip()">' +
+                        lines +
+                        '<div class="hex-num">' +
+                        i +
+                        "</div></div>";
+                }
+                g.innerHTML = html;
+            }
+
+            var _selH = -1;
+            function selHex(i) {
+                document.querySelectorAll(".hexagram").forEach(function (h) {
+                    h.classList.remove("selected", "partner");
+                });
+                if (_selH === i) {
+                    _selH = -1;
+                    document.getElementById("ichingInfo").classList.add("hidden");
+                    return;
+                }
+                _selH = i;
+                var tau = bitRev(i, 6),
+                    sig = 63 - i;
+                document.getElementById("hx" + i).classList.add("selected");
+                if (tau !== i) document.getElementById("hx" + tau).classList.add("partner");
+                if (sig !== i && sig !== tau) document.getElementById("hx" + sig).classList.add("partner");
+                var selfInv = tau === i,
+                    nm = NAMES[i] || "Hexagram " + i;
+                var dist = Math.min(Math.abs(i - tau), 64 - Math.abs(i - tau));
+                var info = document.getElementById("ichingInfo");
+                info.classList.remove("hidden");
+                info.innerHTML =
+                    '<strong style="color:var(--gold);font-size:.95rem">' +
+                    nm +
+                    " (" +
+                    i +
+                    " = " +
+                    i.toString(2).padStart(6, "0") +
+                    "\u2082)</strong><br>" +
+                    '<span style="color:var(--text-muted)">\u03c3 (complement) = ' +
+                    sig +
+                    " &nbsp;|&nbsp; \u03c4 (bit-reversal) = " +
+                    tau +
+                    (selfInv
+                        ? ' <em style="color:var(--gold)">(self-inverse \u2014 in ker C, zero tension)</em>'
+                        : "") +
+                    "</span><br><br>" +
+                    '<span style="font-size:.85rem;color:var(--text-muted)">' +
+                    (selfInv
+                        ? "This hexagram reads the same forward and backward \u2014 Heaven and Earth are already aligned. It contributes zero tension to the commutator C. A silent hexagram: the Unity Clock registers no shear here."
+                        : "Hexagrams " +
+                          i +
+                          " and " +
+                          tau +
+                          " are \u03c4-partners. The bit-reversal swaps Heaven (top line) with Earth (bottom line). Their additive distance on the ring is " +
+                          dist +
+                          " steps, but multiplicative inversion scatters them far apart. That mismatch IS the commutator shear \u2014 the Unity Clock tension.") +
+                    "</span>";
+            }
+
+            // tower animation
+            function animTower() {
+                document.querySelectorAll(".tr-fill").forEach(function (el, i) {
+                    var w = el.dataset.w || "0";
+                    el.style.width = "0%";
+                    setTimeout(
+                        function () {
+                            el.style.width = w + "%";
+                        },
+                        80 + i * 120,
+                    );
+                });
+            }
+
+            // intersection observer
+            function setupObs() {
+                if (!window.IntersectionObserver) return;
+                var obs = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (e) {
+                            if (e.isIntersecting) {
+                                animTower();
+                                obs.unobserve(e.target);
+                            }
+                        });
+                    },
+                    { threshold: 0.25 },
+                );
+                var tw = document.querySelector(".tower-wrap");
+                if (tw) obs.observe(tw);
+            }
+
+            // init
+            document.addEventListener("DOMContentLoaded", function () {
+                buildGrid();
+                setLevel(30);
+                setupObs();
+            });
+        </script>
+    </body>
+</html>
