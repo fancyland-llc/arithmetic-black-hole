@@ -161,6 +161,16 @@
         color: var(--accent-teal);
       }
 
+      .card:nth-child(3) {
+        grid-column: 1 / -1;
+      }
+
+      .card:nth-child(3) .modules span {
+        background: rgba(212, 175, 55, 0.1);
+        border-color: rgba(212, 175, 55, 0.15);
+        color: #d4af37;
+      }
+
       .pitch {
         text-align: center;
         color: var(--text-muted);
@@ -279,6 +289,27 @@
             <span>Trace Law</span>
           </div>
         </a>
+        <a class="card" href="unity_clock.html">
+          <div class="card-icon">&#x1F559;</div>
+          <h2>The Unity Clock</h2>
+          <p>
+            The commutator
+            C&thinsp;=&thinsp;[D<sub>sym</sub>,&thinsp;P<sub>&tau;</sub>]&mdash;measuring
+            the tension between addition and multiplication&mdash;has effective
+            rank <strong>4</strong>, from <em>n</em>&nbsp;=&nbsp;8 to
+            <em>n</em>&nbsp;=&nbsp;92,160. Interactive coprime residue clock,
+            I&nbsp;Ching hexagram grid, and animated primorial tower. Ancient
+            structure meets modern computation.
+          </p>
+          <div class="modules">
+            <span>Effective Rank</span>
+            <span>4 Modes</span>
+            <span>Commutator</span>
+            <span>Phase Transition</span>
+            <span>I Ching</span>
+            <span>Primorial Tower</span>
+          </div>
+        </a>
       </div>
 
       <div class="separator"></div>
@@ -299,7 +330,11 @@
         >GitHub</a
       >
       &nbsp;&middot;&nbsp;
-      <a href="https://doi.org/10.5281/zenodo.19442006">Whitepaper (PDF)</a>
+      <a href="https://doi.org/10.5281/zenodo.19442006">ABH Paper (PDF)</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://doi.org/10.5281/zenodo.19478727"
+        >Unity Clock Paper (PDF)</a
+      >
       &nbsp;&middot;&nbsp;
       <a href="https://orcid.org/0009-0002-0722-3752">ORCID</a>
     </footer>
