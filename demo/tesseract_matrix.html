@@ -1670,7 +1670,7 @@
           G: 1.0,
           dt: 0.003,
           stepsPerFrame: 4,
-          scale: 100, // pixels per unit (desktop max)
+          scale: 115, // pixels per unit (desktop max)
           worldExtent: 1.4, // figure-8 fits comfortably in ±1.0; buffer for trails
           showTrails: true,
           trailLength: 600,
@@ -1725,7 +1725,7 @@
           G: 1.0,
           dt: 0.005,
           stepsPerFrame: 3,
-          scale: 100,
+          scale: 115,
           worldExtent: 1.3, // unit-circumradius equilateral
           showTrails: true,
           trailLength: 500,
@@ -1795,11 +1795,15 @@
           // Design constraints:
           //   (a) Moon orbits Earth (not Sun) — both sit well inside the
           //       Earth's Hill sphere about the Sun (r_Hill ≈ 1.78).
-          //   (b) The (Earth-Moon barycenter):Moon orbital-period ratio is
-          //       held at ~13:1, matching the real Earth:Moon sidereal
-          //       ratio (365.25 d / 27.3 d ≈ 13.4).
-          //   (c) Watchable speed: Moon orbit ~3 s wall time, Earth orbit
-          //       ~38 s wall time at 60 fps.
+          //   (b) Earth-Moon separation d = 0.7 in world units, which gives
+          //       enough screen-space distance between the Earth and Moon
+          //       sprites that they read as distinct bodies down to mobile
+          //       canvas widths.
+          //   (c) Period ratio (Earth around Sun) : (Moon around Earth)
+          //       comes out to ~8:1 here, compressed from the real 13.4:1
+          //       because tightening d to recover 13:1 puts the Moon too
+          //       close to the Earth sprite to be visually distinct on a
+          //       phone screen.
           //
           // Mass ratios compressed from reality for visualization:
           //   real Sun:Earth ≈ 333000:1   →   here 125:1
@@ -1809,12 +1813,12 @@
           masses: [1000, 8, 2],
           positions: (() => {
             // Earth-Moon barycenter at r_em = 12.83 from Sun
-            // Earth at r_em - r_e_to_com = 12.83 - 0.1 = 12.73
-            // Moon  at r_em + r_m_to_com = 12.83 + 0.4 = 13.23
+            // Earth at r_em - r_e_to_com = 12.83 - 0.14 = 12.69
+            // Moon  at r_em + r_m_to_com = 12.83 + 0.56 = 13.39
             return [
               { x: 0, y: 0 }, // Sun
-              { x: 12.73, y: 0 }, // Earth
-              { x: 13.23, y: 0 }, // Moon
+              { x: 12.69, y: 0 }, // Earth
+              { x: 13.39, y: 0 }, // Moon
             ];
           })(),
           velocities: (() => {
@@ -1823,28 +1827,28 @@
               M_earth = 8,
               M_moon = 2;
             const M_em = M_earth + M_moon; // 10
-            const d = 0.5; // Earth-Moon separation
+            const d = 0.7; // Earth-Moon separation
             const r_em = 12.83; // Earth-Moon barycenter from Sun
 
             // Earth and Moon distances from the Earth-Moon barycenter
-            const r_e_to_com = (M_moon / M_em) * d; // 0.1
-            const r_m_to_com = (M_earth / M_em) * d; // 0.4
+            const r_e_to_com = (M_moon / M_em) * d; // 0.14
+            const r_m_to_com = (M_earth / M_em) * d; // 0.56
 
             // (1) Barycenter's circular orbit around Sun
             const v_em_com = Math.sqrt((G * M_sun) / r_em); // ≈ 8.83
 
             // (2) Earth and Moon orbiting the Earth-Moon barycenter at
             //     angular velocity ω_em² = G · M_em / d³
-            const omega_em = Math.sqrt((G * M_em) / (d * d * d)); // ≈ 8.944
+            const omega_em = Math.sqrt((G * M_em) / (d * d * d)); // ≈ 5.40
             // Earth is on the Sun-side of the barycenter, so its
             // about-barycenter velocity is opposite to v_em_com;
             // Moon is on the far side, so its about-barycenter velocity
             // adds to v_em_com. Both bodies share +y motion overall.
-            const v_e_about = omega_em * r_e_to_com; // ≈ 0.894
-            const v_m_about = omega_em * r_m_to_com; // ≈ 3.578
+            const v_e_about = omega_em * r_e_to_com; // ≈ 0.756
+            const v_m_about = omega_em * r_m_to_com; // ≈ 3.024
 
-            const v_earth = v_em_com - v_e_about; // ≈ 7.94
-            const v_moon = v_em_com + v_m_about; // ≈ 12.41
+            const v_earth = v_em_com - v_e_about; // ≈ 8.07
+            const v_moon = v_em_com + v_m_about; // ≈ 11.85
 
             // Sun counter-velocity zeroes total system momentum
             const v_sun = -(M_earth * v_earth + M_moon * v_moon) / M_sun;
@@ -1859,11 +1863,14 @@
           dt: 0.001,
           stepsPerFrame: 4,
           scale: 22,
-          worldExtent: 14, // Moon orbits at radius ~13.1 from COM; buffer for labels
+          worldExtent: 14.5, // Moon orbits at radius ~13.4 from COM; buffer for label
           showTrails: true,
           trailLength: 2400,
           colors: ["var(--body-sun)", "var(--body-earth)", "var(--body-moon)"],
-          radii: [16, 7, 3],
+          // Earth sprite shrunk from 7 → 4 to clear the Moon at d = 0.7.
+          // (Real Earth radius is ~0.0000004 in these world units; sprite
+          // sizes are purely for visibility.)
+          radii: [16, 4, 3],
           labels: ["Sun", "Earth", "Moon"],
           verdict: {
             mass: "hierarchical",
