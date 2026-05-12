@@ -674,8 +674,19 @@
         .container {
           padding: 1.2rem;
         }
+        /* Force the title (glyph + text + glyph) to stay on a single line at
+           phone widths. font-size and glyph dimensions are tuned so the full
+           "⦻ The Tesseract Matrix ⦻" string fits inside a ~280px container
+           (iPhone SE class) without wrapping. Desktop sizing is untouched. */
         h1 {
-          font-size: 1.8rem;
+          font-size: 1.4rem;
+          letter-spacing: 0.04em;
+          white-space: nowrap;
+        }
+        h1::before,
+        h1::after {
+          font-size: 1.05rem;
+          margin: 0 0.35rem;
         }
         .preset-bar {
           grid-template-columns: 1fr 1fr;
