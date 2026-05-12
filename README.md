@@ -56,8 +56,11 @@ Dense verification (33 snapshots, $N = 10^4$ to $10^9$) resolves the residual in
 │   └── ...                             # 18 additional verification scripts
 │
 ├── demo/
-│   ├── index.html                      # Arithmetic Black Hole Simulator (11 modules)
-│   └── the_tower.html                  # The Tower — holographic visualization
+│   ├── index.html                      # Landing page (4-card grid)
+│   ├── simulator.html                  # The Arithmetic Black Hole Simulator (11 modules)
+│   ├── the_tower.html                  # The Hyper-Radix Tower
+│   ├── unity_clock.html                # The Unity Clock
+│   └── tesseract_matrix.html           # The Tesseract Matrix
 │
 ├── data/
 │   ├── boltzmann_fit_results.json      # Boltzmann fit results
@@ -102,10 +105,12 @@ python scripts/maxwells_demon.py
 
 ### **[Launch the Live Demos →](https://fancyland-llc.github.io/arithmetic-black-hole/)**
 
-Or open the HTML files directly in a browser — no server required:
+Four interactive demos, all client-side HTML with zero dependencies — open them directly in a browser, no server required.
 
-- **`demo/simulator.html`** — Full 11-module Arithmetic Black Hole Simulator with N-Body, Spectral, Thermodynamic, Hamiltonian, Curvature, Horizon, Hawking–Page, and Scrambler dashboards
-- **`demo/the_tower.html`** — The Tower: holographic principle visualization
+- **`demo/simulator.html`** — **The Arithmetic Black Hole Simulator.** Full 11-module interactive dashboard: N-Body, Spectral, Thermodynamic, Hamiltonian, Curvature, Horizon, Hawking–Page, and Scrambler. Explore the Boltzmann–softmax identity across primorial lattices up to $m = 30030$.
+- **`demo/the_tower.html`** — **The Hyper-Radix Tower.** Holographic-principle visualization: how infinite primorial complexity is encoded in the $2 \times 2$ boundary matrix at $m_0 = 6$, with eigenvalue modes whose phases advance at rate $1/(p-1)$ on every floor.
+- **`demo/unity_clock.html`** — **The Unity Clock.** I Ching hexagrams, interactive coprime-residue clock, and animated primorial tower showing the effective-rank-4 commutator structure $C = [D_\text{sym}, P_\tau]$ from $n=8$ to $n=92{,}160$. Ancient structure meets modern computation. Matos (2026), [DOI: 10.5281/zenodo.19478727](https://doi.org/10.5281/zenodo.19478727).
+- **`demo/tesseract_matrix.html`** — **The Tesseract Matrix.** Integer-exact three-body classifier with four canonical benchmarks side-by-side: Chenciner–Montgomery figure-8, Lagrange $L_4$ equilateral, Burrau's Pythagorean 3-4-5, and Sun–Earth–Moon. Includes an interactive 16-vertex tesseract, Klein-4 sector grid, and the Pro-Humanist Future manifesto. Matos (2026), [DOI: 10.5281/zenodo.20129255](https://doi.org/10.5281/zenodo.20129255).
 
 ## Companion Papers
 
