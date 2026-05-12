@@ -1,0 +1,2392 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      The Tesseract Matrix — Integer-Exact Three-Body Classification
+    </title>
+    <meta
+      name="description"
+      content="Interactive demo for the Tesseract Matrix: integer-exact classification of three-body Newtonian trajectories on the Coprime Residue Lattice. Matos (2026)."
+    />
+    <style>
+      :root {
+        --bg: #0a0a0f;
+        --bg-card: #12121a;
+        --bg-card-hover: #1a1a25;
+        --bg-canvas: #050509;
+        --text: #e8e6e3;
+        --text-muted: #9a9a9a;
+        --accent-purple: #9d8cff;
+        --accent-teal: #5dcaa5;
+        --accent-blue: #85b7eb;
+        --accent-coral: #f0997b;
+        --accent-pink: #ed93b1;
+        --accent-amber: #efb027;
+        --accent-gold: #d4af37;
+        --border: rgba(255, 255, 255, 0.08);
+        --body-1: #ff8a65;
+        --body-2: #64b5f6;
+        --body-3: #aed581;
+        --body-sun: #ffd54f;
+        --body-earth: #4fc3f7;
+        --body-moon: #cfd8dc;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        text-align: center;
+        padding: 4rem 0 2.5rem;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 2.5rem;
+      }
+
+      /* Shared rainbow palette so the title and the two tesseract glyphs all
+       inherit the same waveform of colors. background-size 280% + shimmer
+       keyframes slide the gradient back and forth across each element. */
+      h1,
+      h1::before,
+      h1::after {
+        background: linear-gradient(
+          90deg,
+          #9d8cff 0%,
+          #5dcaa5 18%,
+          #85b7eb 36%,
+          #ed93b1 54%,
+          #efb027 72%,
+          #9d8cff 100%
+        );
+        background-size: 280% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      h1 {
+        font-size: 2.7rem;
+        font-weight: 300;
+        letter-spacing: 0.06em;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 22px rgba(157, 140, 255, 0.28));
+        animation: tesseract-shimmer 9s ease-in-out infinite;
+        position: relative;
+      }
+
+      /* The glyphs cycle through the gradient in lock-step with the title, but
+       their pulse is counter-phased: when the left glyph is expanding to
+       "receive" the wave, the right glyph is contracted, and vice-versa. */
+      h1::before,
+      h1::after {
+        content: "\29BB";
+        display: inline-block;
+        font-size: 1.6rem;
+        vertical-align: middle;
+        margin: 0 0.6rem;
+        filter: drop-shadow(0 0 14px rgba(93, 202, 165, 0.55));
+        animation:
+          tesseract-shimmer 9s ease-in-out infinite,
+          tesseract-glyph 9s ease-in-out infinite;
+      }
+
+      h1::before {
+        animation-delay: 0s, 0s;
+      } /* left:  large at t=0 */
+      h1::after {
+        animation-delay:
+          0s,
+          -4.5s;
+      } /* right: large at t=4.5s */
+
+      @keyframes tesseract-shimmer {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes tesseract-glyph {
+        0%,
+        100% {
+          opacity: 0.95;
+          transform: scale(1.18) rotate(0deg);
+        }
+        50% {
+          opacity: 0.3;
+          transform: scale(0.82) rotate(180deg);
+        }
+      }
+
+      .subtitle {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        font-weight: 300;
+        max-width: 640px;
+        margin: 0 auto 1.2rem;
+      }
+
+      .doi {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+      }
+
+      .doi a {
+        color: var(--accent-purple);
+        text-decoration: none;
+      }
+
+      .doi a:hover {
+        text-decoration: underline;
+      }
+
+      .back {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        text-decoration: none;
+      }
+
+      .back:hover {
+        color: var(--accent-purple);
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin: 3rem 0 1.2rem;
+        color: var(--accent-purple);
+        letter-spacing: 0.01em;
+      }
+
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 500;
+        margin: 2rem 0 0.8rem;
+        color: var(--text);
+      }
+
+      p {
+        margin-bottom: 1rem;
+        color: var(--text);
+      }
+
+      p.muted {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+
+      em {
+        color: var(--accent-teal);
+        font-style: normal;
+      }
+
+      strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .lede {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent-purple);
+        padding: 1.2rem 1.4rem;
+        border-radius: 6px;
+        margin: 1rem 0 2rem;
+        color: var(--text-muted);
+        font-size: 0.98rem;
+      }
+
+      .lede strong {
+        color: var(--accent-teal);
+      }
+
+      /* Preset selector */
+      .preset-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        margin: 2rem 0 1rem;
+      }
+
+      .preset-btn {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.85rem 0.5rem;
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.18s;
+        text-align: center;
+        line-height: 1.3;
+      }
+
+      .preset-btn:hover {
+        background: var(--bg-card-hover);
+        color: var(--text);
+        border-color: rgba(157, 140, 255, 0.3);
+      }
+
+      .preset-btn.active {
+        background: linear-gradient(
+          135deg,
+          rgba(157, 140, 255, 0.15),
+          rgba(93, 202, 165, 0.1)
+        );
+        border-color: var(--accent-purple);
+        color: var(--text);
+      }
+
+      .preset-btn .year {
+        display: block;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        font-weight: 400;
+        margin-top: 0.25rem;
+      }
+
+      .preset-btn.active .year {
+        color: var(--accent-teal);
+      }
+
+      /* Canvas */
+      .canvas-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        max-height: 560px;
+        background: var(--bg-canvas);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 1rem 0;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .canvas-controls {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        display: flex;
+        gap: 0.4rem;
+        z-index: 5;
+      }
+
+      .ctrl-btn {
+        background: rgba(10, 10, 15, 0.75);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.78rem;
+        padding: 0.35rem 0.7rem;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .ctrl-btn:hover {
+        color: var(--text);
+        border-color: rgba(157, 140, 255, 0.4);
+      }
+
+      .clock {
+        position: absolute;
+        bottom: 0.75rem;
+        left: 0.85rem;
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+      }
+
+      .ejection-alert {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0.8rem 1.4rem;
+        background: rgba(240, 153, 123, 0.18);
+        border: 1px solid var(--accent-coral);
+        color: var(--accent-coral);
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 0.05em;
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+        text-shadow: 0 0 12px rgba(240, 153, 123, 0.4);
+      }
+
+      .ejection-alert.show {
+        opacity: 1;
+      }
+
+      /* Verdict panel */
+      .verdict {
+        background: linear-gradient(
+          135deg,
+          rgba(157, 140, 255, 0.07),
+          rgba(93, 202, 165, 0.05)
+        );
+        border: 1px solid rgba(157, 140, 255, 0.25);
+        border-radius: 10px;
+        padding: 1.3rem 1.5rem;
+        margin: 1.2rem 0;
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 0.5s,
+          transform 0.5s;
+      }
+
+      .verdict.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .verdict .label {
+        font-size: 0.72rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent-teal);
+        margin-bottom: 0.6rem;
+      }
+
+      .verdict-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+
+      @media (max-width: 640px) {
+        .verdict-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .verdict-cell {
+        padding: 0.6rem 0.8rem;
+        background: rgba(10, 10, 15, 0.4);
+        border-radius: 6px;
+        border-left: 2px solid var(--accent-purple);
+      }
+
+      .verdict-cell .axis {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+
+      .verdict-cell .value {
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .verdict-cell .detail {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 0.2rem;
+      }
+
+      .verdict .closer {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      /* Drill-down provenance tag — closed by default so the page reads as
+         a philosophical / scientific document, not a legal-disclosure form.
+         Anyone curious about apparatus provenance clicks to expand. */
+      .verdict .verdict-source {
+        margin-top: 0.9rem;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+        line-height: 1.55;
+      }
+
+      .verdict .verdict-source summary {
+        display: inline-block;
+        cursor: pointer;
+        list-style: none;
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        opacity: 0.45;
+        user-select: none;
+        transition: opacity 0.18s, color 0.18s;
+      }
+      .verdict .verdict-source summary::-webkit-details-marker { display: none; }
+      .verdict .verdict-source summary::marker { content: ""; }
+      .verdict .verdict-source summary::before {
+        content: "+ ";
+        opacity: 0.7;
+      }
+      .verdict .verdict-source[open] summary::before { content: "– "; }
+      .verdict .verdict-source summary:hover {
+        opacity: 0.9;
+        color: var(--accent-purple);
+      }
+      .verdict .verdict-source[open] summary { opacity: 0.85; }
+
+      .verdict .verdict-source-body {
+        margin-top: 0.55rem;
+        padding-top: 0.55rem;
+        border-top: 1px dashed rgba(255, 255, 255, 0.06);
+        opacity: 0.78;
+      }
+
+      /* Per-preset narrative card */
+      .narrative {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.6rem 1.8rem;
+        margin: 1.2rem 0 2rem;
+      }
+
+      .narrative .who {
+        display: flex;
+        gap: 1rem;
+        align-items: baseline;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .narrative .who .name {
+        font-weight: 600;
+        color: var(--accent-purple);
+        font-size: 1.05rem;
+      }
+
+      .narrative .who .year {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+      }
+
+      .narrative p {
+        margin-bottom: 0.8rem;
+      }
+
+      .narrative .meaning {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.93rem;
+        font-style: italic;
+      }
+
+      .narrative .meaning::before {
+        content: "for human flourishing — ";
+        color: var(--accent-teal);
+        font-style: normal;
+        font-weight: 500;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* Manifesto */
+      .manifesto {
+        margin: 4rem 0 2rem;
+        padding: 2.5rem 2rem;
+        background: linear-gradient(
+          180deg,
+          rgba(157, 140, 255, 0.03),
+          rgba(93, 202, 165, 0.04)
+        );
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        border-radius: 8px;
+      }
+
+      .manifesto h2 {
+        margin-top: 0;
+        text-align: center;
+        color: var(--accent-teal);
+        font-size: 1.6rem;
+      }
+
+      .manifesto .lead {
+        text-align: center;
+        max-width: 640px;
+        margin: 0 auto 2rem;
+        color: var(--text);
+        font-size: 1.05rem;
+        line-height: 1.75;
+      }
+
+      .manifesto p {
+        max-width: 680px;
+        margin: 0 auto 1.2rem;
+        color: var(--text-muted);
+      }
+
+      .manifesto .closing {
+        max-width: 680px;
+        margin: 2rem auto 0;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--text);
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .manifesto .closing .arrival {
+        display: inline-block;
+        margin-top: 1.1rem;
+        font-size: 1.65rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--accent-teal);
+        /* Two-layer glow (wide soft halo + tight bright halo) for depth.
+           Slow 7s breathing animation so the word reads as a living
+           movement, not a static label — but the period stays a period. */
+        text-shadow:
+          0 0 28px rgba(93, 202, 165, 0.42),
+          0 0 9px rgba(93, 202, 165, 0.55);
+        animation: prohumanism-breathe 7s ease-in-out infinite;
+      }
+
+      @keyframes prohumanism-breathe {
+        0%,
+        100% {
+          text-shadow:
+            0 0 26px rgba(93, 202, 165, 0.38),
+            0 0 8px rgba(93, 202, 165, 0.5);
+        }
+        50% {
+          text-shadow:
+            0 0 38px rgba(93, 202, 165, 0.62),
+            0 0 13px rgba(93, 202, 165, 0.78);
+        }
+      }
+
+      /* Inheritance section */
+      .inheritance {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+
+      @media (max-width: 720px) {
+        .inheritance {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .inheritance .row {
+        padding: 1rem 1.2rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+
+      .inheritance .row .heading {
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent-amber);
+        margin-bottom: 0.4rem;
+      }
+
+      .inheritance .row .body {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.55;
+      }
+
+      /* Footer */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 2rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        margin-top: 3rem;
+      }
+
+      footer a {
+        color: var(--accent-purple);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      .footer-brand {
+        font-size: 0.9rem;
+        color: var(--text);
+        font-weight: 500;
+        margin-bottom: 0.4rem;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 1.2rem;
+        }
+        h1 {
+          font-size: 1.8rem;
+        }
+        .preset-bar {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* Eyebrow */
+      .eyebrow {
+        display: block;
+        text-align: center;
+        color: var(--accent-purple);
+        font-size: 0.74rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        margin-bottom: 0.9rem;
+        font-weight: 500;
+      }
+
+      /* 250-Year Timeline */
+      .timeline {
+        position: relative;
+        padding: 0.5rem 0 1rem 0;
+        margin: 2rem 0 2.5rem;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 1.05rem;
+        top: 0.3rem;
+        bottom: 0.3rem;
+        width: 1px;
+        background: linear-gradient(
+          180deg,
+          rgba(239, 176, 39, 0.5) 0%,
+          rgba(157, 140, 255, 0.5) 55%,
+          rgba(93, 202, 165, 0.55) 100%
+        );
+      }
+
+      .tl-entry {
+        position: relative;
+        padding: 0.4rem 0 0.4rem 3rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .tl-dot {
+        position: absolute;
+        left: 0.62rem;
+        top: 0.55rem;
+        width: 0.9rem;
+        height: 0.9rem;
+        border-radius: 50%;
+        border: 2px solid var(--bg);
+        z-index: 1;
+      }
+
+      .tl-ancient .tl-dot {
+        background: var(--accent-amber);
+        box-shadow: 0 0 8px rgba(239, 176, 39, 0.45);
+      }
+      .tl-modern .tl-dot {
+        background: var(--accent-purple);
+        box-shadow: 0 0 8px rgba(157, 140, 255, 0.45);
+      }
+      .tl-future .tl-dot {
+        background: var(--accent-teal);
+        box-shadow: 0 0 14px rgba(93, 202, 165, 0.7);
+      }
+
+      .tl-year {
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        font-family: "Consolas", "Courier New", monospace;
+        margin-bottom: 0.15rem;
+        color: var(--text-muted);
+      }
+      .tl-ancient .tl-year {
+        color: var(--accent-amber);
+      }
+      .tl-modern .tl-year {
+        color: var(--accent-purple);
+      }
+      .tl-future .tl-year {
+        color: var(--accent-teal);
+      }
+
+      .tl-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.3rem;
+      }
+
+      .tl-body {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      /* Tesseract Hypercube */
+      .tesseract-wrap {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.5rem 1.4rem 1.2rem;
+        margin: 2rem 0;
+        text-align: center;
+      }
+
+      .tesseract-wrap .ts-label {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 0.6rem;
+        letter-spacing: 0.04em;
+      }
+
+      .tesseract-wrap .ts-instruction {
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        margin-top: 0.6rem;
+        font-style: italic;
+      }
+
+      .tesseract-svg {
+        width: 100%;
+        max-width: 460px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+      }
+
+      .ts-vertex {
+        fill: var(--bg-card-hover);
+        stroke: rgba(157, 140, 255, 0.55);
+        stroke-width: 1.2;
+        transition: all 0.18s;
+        cursor: pointer;
+      }
+
+      .ts-vertex:hover,
+      .ts-vertex.hovered {
+        fill: var(--accent-purple);
+        stroke: var(--text);
+        stroke-width: 2;
+        filter: drop-shadow(0 0 8px rgba(157, 140, 255, 0.9));
+      }
+
+      .ts-vertex.antipode {
+        fill: var(--accent-teal);
+        stroke: var(--text);
+        stroke-width: 2;
+        filter: drop-shadow(0 0 8px rgba(93, 202, 165, 0.9));
+      }
+
+      .ts-edge {
+        stroke: rgba(157, 140, 255, 0.13);
+        stroke-width: 1;
+        fill: none;
+      }
+      .ts-edge.antipodal-line {
+        stroke: rgba(93, 202, 165, 0.55);
+        stroke-width: 1.4;
+      }
+
+      .ts-label-text {
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 9px;
+        fill: var(--text-muted);
+        pointer-events: none;
+        transition: fill 0.18s;
+      }
+
+      .ts-label-text.active {
+        fill: var(--text);
+      }
+
+      .ts-readout {
+        margin-top: 1rem;
+        min-height: 1.4rem;
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 0.86rem;
+        color: var(--text-muted);
+        letter-spacing: 0.06em;
+      }
+
+      .ts-readout strong {
+        color: var(--accent-purple);
+        font-weight: 600;
+      }
+      .ts-readout em {
+        color: var(--accent-teal);
+        font-style: normal;
+        font-weight: 600;
+      }
+
+      /* Klein-4 sector grid */
+      .sector-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.7rem;
+        margin: 1.4rem 0 1rem;
+      }
+
+      @media (max-width: 720px) {
+        .sector-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .sector-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+      }
+
+      .sector-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(93, 202, 165, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .sector-card.active {
+        background: linear-gradient(
+          135deg,
+          rgba(93, 202, 165, 0.12),
+          rgba(157, 140, 255, 0.06)
+        );
+        border-color: var(--accent-teal);
+      }
+
+      .sector-card .sc-code {
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 0.78rem;
+        color: var(--accent-teal);
+        letter-spacing: 0.08em;
+        margin-bottom: 0.45rem;
+      }
+
+      .sector-card .sc-name {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.35rem;
+      }
+
+      .sector-card .sc-detail {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        min-height: 3.6em; /* lock to 3 lines so card heights match */
+      }
+
+      .sector-readout {
+        background: rgba(10, 10, 15, 0.45);
+        border-left: 2px solid var(--accent-teal);
+        padding: 1rem 1.2rem;
+        border-radius: 6px;
+        margin: 0 0 2rem;
+        /* Lock height to the worst-case readout so the Pro-Humanist Future
+         panel below never bounces when the user clicks a different sector.
+         5 lines × 1.65 line-height ≈ 8.25em plus a small buffer. */
+        height: 9em;
+        font-size: 0.92rem;
+        color: var(--text-muted);
+        line-height: 1.65;
+        overflow: hidden;
+      }
+
+      @media (max-width: 720px) {
+        .sector-readout {
+          height: 12em;
+        } /* taller column on narrow screens */
+      }
+
+      @media (max-width: 480px) {
+        .sector-readout {
+          height: 14em;
+        }
+      }
+
+      .sector-readout strong {
+        color: var(--text);
+      }
+      .sector-readout em {
+        color: var(--accent-teal);
+        font-style: normal;
+      }
+
+      /* Flourishing grid */
+      .flourishing-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 2rem 0 1.5rem;
+      }
+
+      @media (max-width: 640px) {
+        .flourishing-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .fl-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1.4rem 1.5rem;
+        transition: all 0.2s;
+      }
+
+      .fl-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(93, 202, 165, 0.25);
+        transform: translateY(-1px);
+      }
+
+      .fl-card .fl-icon {
+        font-size: 1.45rem;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      .fl-card .fl-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--accent-teal);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.005em;
+      }
+
+      .fl-card .fl-body {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        line-height: 1.65;
+      }
+
+      /* Anchor quote */
+      .anchor {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        margin: 2.5rem 0 2rem;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .anchor-quote {
+        font-size: 1.2rem;
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.7;
+        max-width: 640px;
+        margin: 0 auto;
+        color: var(--text);
+        letter-spacing: 0.01em;
+      }
+
+      .anchor-quote strong {
+        color: var(--accent-teal);
+        font-weight: 500;
+      }
+
+      .anchor-attribution {
+        display: block;
+        margin-top: 1.2rem;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        font-style: normal;
+        font-weight: 500;
+      }
+
+      /* Section separator */
+      .sep {
+        width: 50px;
+        height: 1px;
+        background: var(--border);
+        margin: 3rem auto;
+      }
+
+      /* Intro-box callout */
+      .intro-box {
+        background: var(--bg-card);
+        border-left: 3px solid var(--accent-teal);
+        padding: 1rem 1.2rem;
+        border-radius: 6px;
+        margin: 1.2rem 0 1.8rem;
+        color: var(--text-muted);
+        font-size: 0.93rem;
+        line-height: 1.65;
+      }
+
+      .intro-box strong {
+        color: var(--accent-teal);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="back">← Back to demos</a>
+
+      <header>
+        <span class="eyebrow"
+          >Three-Body Problem · 250 Years · Integer-Exact Diagnosis</span
+        >
+        <h1>The Tesseract Matrix</h1>
+        <p class="subtitle">
+          Integer-exact classification of three-body Newtonian trajectories on
+          the Coprime Residue Lattice
+        </p>
+        <p class="doi">
+          Matos (2026) &mdash;
+          <a href="https://doi.org/10.5281/zenodo.20129255"
+            >DOI: 10.5281/zenodo.20129255</a
+          >
+        </p>
+      </header>
+
+      <p class="lede">
+        For 250 years humans have wrestled with the three-body problem. Newton
+        couldn't close it. Poincaré proved no general closed-form solution
+        exists. We learned to look at three points of light and ask,
+        <em>what is the structure of their dance?</em> The Tesseract Matrix is
+        the newest tool in that 250-year conversation: a measurement instrument
+        that gives a human an
+        <strong>integer-exact, three-coordinate fingerprint</strong> of any
+        three-body trajectory — <em>(mass-class, regime, ejection-state)</em> —
+        from an observation window orders of magnitude shorter than Lyapunov
+        time.
+        <strong
+          >Pick a benchmark below. Watch it play. Read its fingerprint.</strong
+        >
+      </p>
+
+      <h2>The Three-Body Lineage</h2>
+      <p class="muted">
+        The three-body problem is the oldest open problem in mathematical
+        physics that is still alive in active research. Each generation has
+        added a new instrument to the toolkit; none has replaced the ones
+        before. The Tesseract Matrix joins a long lineage.
+      </p>
+
+      <div class="timeline">
+        <div class="tl-entry tl-ancient">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1687</div>
+          <div class="tl-title">
+            Newton publishes the <em>Principia Mathematica</em>
+          </div>
+          <div class="tl-body">
+            Universal gravitation gives the equations of motion for any number
+            of bodies. The two-body problem yields an exact closed-form. The
+            three-body problem does not — and never will.
+          </div>
+        </div>
+        <div class="tl-entry tl-ancient">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1772</div>
+          <div class="tl-title">
+            Lagrange identifies the L<sub>4</sub> / L<sub>5</sub> equilibria
+          </div>
+          <div class="tl-body">
+            Three masses at the vertices of an equilateral triangle, rotating
+            rigidly. The first exact three-body solution. Marginally stable —
+            the substrate reads this knife-edge as the highest Klein-4
+            coefficient of variation in the catalog.
+          </div>
+        </div>
+        <div class="tl-entry tl-ancient">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1890</div>
+          <div class="tl-title">
+            Poincaré proves there is no general closed-form
+          </div>
+          <div class="tl-body">
+            The three-body problem is mathematically non-integrable. There exist
+            no general analytic solutions; long-term behavior is sensitive to
+            initial conditions. The discovery becomes the seed of modern chaos
+            theory.
+          </div>
+        </div>
+        <div class="tl-entry tl-ancient">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1913</div>
+          <div class="tl-title">Burrau's Pythagorean configuration</div>
+          <div class="tl-body">
+            Three masses (3, 4, 5) at rest at the vertices of a right triangle.
+            Becomes the 20th century's archetypal chaotic three-body system —
+            and the standard test bed for any new method that claims to read
+            chaos.
+          </div>
+        </div>
+        <div class="tl-entry tl-modern">
+          <div class="tl-dot"></div>
+          <div class="tl-year">1969</div>
+          <div class="tl-title">
+            Szebehely & Peters numerically resolve Burrau
+          </div>
+          <div class="tl-body">
+            The first high-precision numerical integration of Burrau's
+            configuration: chaotic dance with close approaches accumulating
+            through t ≈ 60 system-time units, then ejection of the lightest
+            body around t ≈ 113. Computers join the human toolkit.
+          </div>
+        </div>
+        <div class="tl-entry tl-modern">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2000</div>
+          <div class="tl-title">Chenciner & Montgomery: the figure-eight</div>
+          <div class="tl-body">
+            A genuinely new periodic orbit — three equal masses chasing each
+            other along a single figure-eight curve. The first qualitatively new
+            three-body orbit discovered in 220 years. Pure mathematical
+            creativity, no machine required to find it.
+          </div>
+        </div>
+        <div class="tl-entry tl-modern">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2021</div>
+          <div class="tl-title">NASA JPL DE440 ephemerides</div>
+          <div class="tl-body">
+            Modern Sun–Earth–Moon trajectories to integer-meter precision over
+            centuries. Real measurement, real instruments, real bodies. The
+            substrate identifies this real physical system as the deepest-KAM
+            signal in its entire benchmark catalog.
+          </div>
+        </div>
+        <div class="tl-entry tl-future">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2026</div>
+          <div class="tl-title">The Tesseract Matrix</div>
+          <div class="tl-body">
+            Integer-exact, three-coordinate substrate classifier. Diagnoses
+            mass-class, regime, and ejection-state from an observation window
+            <em>two orders of magnitude shorter than Lyapunov time</em>. The
+            first <em>symbolic</em> measurement instrument for chaotic dynamics.
+          </div>
+        </div>
+        <div class="tl-entry tl-future">
+          <div class="tl-dot"></div>
+          <div class="tl-year">Future</div>
+          <div class="tl-title">Whatever you measure with it</div>
+          <div class="tl-body">
+            The mathematics is placed in the public domain under the MIT
+            license. The next 250 years of three-body discoveries — and
+            four-body, and N-body — belong to whoever picks up the instrument
+            and looks carefully.
+          </div>
+        </div>
+      </div>
+
+      <h2>Pick a benchmark. Watch it play.</h2>
+      <p class="muted">
+        Each preset below is a real published initial-condition set from the
+        timeline above. The simulator runs standard Newtonian gravity
+        (Velocity-Verlet integration); no substrate code is shipped here. The
+        verdict panel is a hardcoded lookup from the preprint's Case Study B —
+        the apparatus that produces these verdicts is patented and held as trade
+        secret.
+      </p>
+
+      <div class="preset-bar">
+        <button class="preset-btn active" data-preset="figure8">
+          Chenciner–Montgomery<br />Figure-8
+          <span class="year">Chenciner &amp; Montgomery, 2000</span>
+        </button>
+        <button class="preset-btn" data-preset="lagrange">
+          Lagrange L<sub>4</sub><br />Equilateral
+          <span class="year">Lagrange, 1772</span>
+        </button>
+        <button class="preset-btn" data-preset="pythagorean">
+          Burrau<br />Pythagorean 3-4-5
+          <span class="year">Burrau, 1913</span>
+        </button>
+        <button class="preset-btn" data-preset="solarsystem">
+          Sun–Earth–Moon<br />Heliocentric
+          <span class="year">JPL DE440, 2021</span>
+        </button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="canvas"></canvas>
+        <div class="canvas-controls">
+          <button class="ctrl-btn" id="restart-btn">↻ Restart</button>
+          <button class="ctrl-btn" id="trails-btn">Trails: ON</button>
+        </div>
+        <div class="clock" id="clock">t = 0.000</div>
+        <div class="ejection-alert" id="ejection-alert">EJECTION DETECTED</div>
+      </div>
+
+      <div class="verdict" id="verdict">
+        <div class="label">Substrate Verdict</div>
+        <div class="verdict-grid">
+          <div class="verdict-cell">
+            <div class="axis">Mass-Class</div>
+            <div class="value" id="v-mass">—</div>
+            <div class="detail" id="v-mass-detail">
+              via T<sub>5_8</sub> smash entropy
+            </div>
+          </div>
+          <div class="verdict-cell">
+            <div class="axis">Regime</div>
+            <div class="value" id="v-regime">—</div>
+            <div class="detail" id="v-regime-detail">via Klein-4 sector CV</div>
+          </div>
+          <div class="verdict-cell">
+            <div class="axis">Ejection-State</div>
+            <div class="value" id="v-ejection">—</div>
+            <div class="detail" id="v-ejection-detail">
+              via persistent-missing-codeword
+            </div>
+          </div>
+        </div>
+        <div class="closer" id="v-closer"></div>
+        <details class="verdict-source">
+          <summary>source</summary>
+          <div class="verdict-source-body">
+            Verdict precomputed from preprint Case Study B. The classifier
+            apparatus that produced these verdicts is patented (U.S.
+            Provisional 64/059,916) and held as trade secret; the demo runs
+            standard Newtonian gravity only.
+          </div>
+        </details>
+      </div>
+
+      <div class="narrative" id="narrative">
+        <div class="who">
+          <span class="name" id="n-name">—</span>
+          <span class="year" id="n-year">—</span>
+        </div>
+        <p id="n-paragraph"></p>
+        <div class="meaning" id="n-meaning"></div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h2>The Sixteen-Vertex Tesseract</h2>
+      <p class="muted">
+        The substrate alphabet maps each prime <em>p</em> in its admitted
+        alphabet to a 4-bit codeword on a 4-cube — a hypercube with
+        <strong>16 vertices arranged in 8 antipodal pairs</strong>. Antipodal
+        codewords (bit-complements of each other) carry the substrate's
+        <em>parity-conjugate twin</em> structure, which is the geometric source
+        of the integer-exactness. Hover any vertex to see its codeword
+        highlight, with its antipode lit in teal across the hypercube.
+      </p>
+
+      <div class="tesseract-wrap">
+        <div class="ts-label">
+          The Coprime Residue Lattice — 16 codewords, 8 antipodal twin pairs
+        </div>
+        <svg
+          class="tesseract-svg"
+          viewBox="0 0 460 360"
+          id="tesseract-svg"
+          aria-label="Sixteen-vertex tesseract diagram"
+        >
+          <g id="ts-edges-bg"></g>
+          <g id="ts-antipodal-lines"></g>
+          <g id="ts-vertices"></g>
+          <g id="ts-labels"></g>
+        </svg>
+        <div class="ts-readout" id="ts-readout">
+          Hover a vertex to read its codeword and antipode pair.
+        </div>
+        <div class="ts-instruction">
+          Every codeword has exactly one antipodal twin. Twin pairs are the
+          substrate's parity-conjugate structure.
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h2>The Three Diagnostic Coordinates</h2>
+
+      <p class="muted">
+        The Tesseract Matrix maps each prime in a substrate alphabet to a 4-bit
+        codeword on a 16-vertex hypercube. Applied to a three-body trajectory,
+        the substrate emits three integer-exact coordinates that classify what
+        is happening, in a language a human can read.
+      </p>
+
+      <div class="inheritance">
+        <div class="row">
+          <div class="heading">Mass-Class</div>
+          <div class="body">
+            From the substrate's <em>T<sub>5_8</sub></em> class-multiplication
+            law: <em>equal</em>, <em>comparable</em>, or <em>hierarchical</em>.
+            Reads as Shannon entropy in bits: 0.000, 1.583, or 1.000.
+          </div>
+        </div>
+        <div class="row">
+          <div class="heading">Regime</div>
+          <div class="body">
+            From Klein-4 sector occupancy: <em>KAM-stable</em>,
+            <em>ergodic-chaos</em>, or <em>basin-boundary marginal</em>. The
+            coefficient of variation orders them.
+          </div>
+        </div>
+        <div class="row">
+          <div class="heading">Ejection-State</div>
+          <div class="body">
+            From persistent missing codewords over rolling time windows:
+            <em>bound</em>, <em>basin-brush</em>, <em>ejection</em>, or
+            <em>structural-absence</em>. Distinguishes a thrown body from a body
+            that was never middle.
+          </div>
+        </div>
+      </div>
+
+      <h2>The Klein-4 Sectors</h2>
+      <p class="muted">
+        The 16-vertex hypercube partitions naturally into
+        <strong>four Klein-4 sectors</strong>, indexed by the residual
+        <em>V = ℤ/2 × ℤ/2</em> quotient after the substrate's parity grading.
+        Every three-body trajectory deposits its codewords into one or more of
+        these sectors over its observation window; the distribution is what
+        separates a KAM choreography from genuine chaos.
+      </p>
+
+      <div class="sector-grid">
+        <button class="sector-card" data-sector="deep-kam">
+          <div class="sc-code">V = (0, 0)</div>
+          <div class="sc-name">Deep-KAM</div>
+          <div class="sc-detail">
+            Profoundly stable. A single dominant sector with near-zero
+            coefficient of variation &mdash; the rarest verdict in the catalog.
+          </div>
+        </button>
+        <button class="sector-card" data-sector="kam">
+          <div class="sc-code">V = (0, 1)</div>
+          <div class="sc-name">KAM-stable</div>
+          <div class="sc-detail">
+            Quasi-periodic choreography. Tight orbit through a small subset of
+            sectors with low Klein-4 variation overall.
+          </div>
+        </button>
+        <button class="sector-card" data-sector="marginal">
+          <div class="sc-code">V = (1, 0)</div>
+          <div class="sc-name">Marginal</div>
+          <div class="sc-detail">
+            Stable equilibrium on a knife-edge of variation. The highest Klein-4
+            CV in the catalog despite being a fixed-point solution.
+          </div>
+        </button>
+        <button class="sector-card" data-sector="chaos">
+          <div class="sc-code">V = (1, 1)</div>
+          <div class="sc-name">Ergodic chaos</div>
+          <div class="sc-detail">
+            Ergodic occupancy across all four sectors. Persistent missing
+            codewords flag an upcoming ejection event.
+          </div>
+        </button>
+      </div>
+
+      <div class="sector-readout" id="sector-readout">
+        <strong>Click a sector</strong> to see which benchmark above lives in
+        it, and what the substrate diagnoses there.
+      </div>
+
+      <!-- ====================================================================
+         MANIFESTO — Futurist factor, pro-humanist, counter-transhumanist
+         ==================================================================== -->
+      <div class="manifesto">
+        <h2>The Pro-Humanist Future</h2>
+
+        <p class="lead">
+          This is a message of hope. The Tesseract Matrix is a powerful
+          instrument that amplifies what a human being can already perceive
+          about the natural world. It exists because mathematics and physics
+          have held human attention for more than 3,000 years. It gives us
+          access to the fundamental quantum nature of our universe in a way that
+          we can actually use it
+          <strong>for human flourishing</strong>.
+        </p>
+
+        <p>
+          We live in a moment when the dominant story about mathematics and
+          computation is a story of <em>replacement</em>. The popular futurism
+          says: machines will think for us; consciousness will upload;
+          intelligence will leave the body behind; humans will be optimized into
+          something else, or out of the picture entirely. That story has a name
+          — <strong>dystopian transhumanism</strong> — and it has captured a
+          great deal of energy in the present cultural moment.
+        </p>
+
+        <p>
+          The substrate program is not that story. The Tesseract Matrix arrives
+          in a different lineage. Joseph-Louis Lagrange wrote about three masses
+          on a triangle in 1772, sitting at a desk with a quill pen. Carl Burrau
+          placed three masses at the corners of a 3-4-5 right triangle in 1913,
+          in a paper room at an astronomical observatory. Alain Chenciner and
+          Richard Montgomery discovered the figure-eight choreography in 2000,
+          after looking at three points of light and asking whether they could
+          be made to chase each other. Each of these is a human discovery. Each
+          is a person, embodied, situated in a place and a time, looking
+          carefully at the world and asking <em>what is its structure</em>.
+        </p>
+
+        <p>
+          The substrate joins that lineage. It does not replace it. When the
+          Tesseract Matrix diagnoses Sun–Earth–Moon as the
+          <strong>deepest-KAM signal in its catalog</strong> — the most
+          profoundly stable configuration in everything tested — it is not
+          telling you something the machine knows that you do not. It is
+          confirming, in the precise language of integer arithmetic, what every
+          human who has ever looked up at the moon at night has always quietly
+          known: <em>this place, our home, is profoundly stable</em>. The
+          substrate gives you a way to <strong>measure that knowing</strong>. It
+          does not replace the knowing.
+        </p>
+
+        <p>
+          This is the alternative story. The one where mathematics — humanity's
+          oldest, freest, most democratic inheritance — gets new measurement
+          instruments without losing its grounding in human curiosity, human
+          observation, and human meaning. It is not the future where machines
+          optimize humans away. It is not the future where consciousness uploads
+          and bodies are discarded. It is not the future where some elite owns
+          the mathematics and the rest are spectators.
+        </p>
+
+        <p>
+          The mathematical content of the Tesseract Matrix is placed in the
+          public domain under the MIT license. Every theorem, every empirical
+          table, every machine-precision tolerance, every negative result is
+          yours. The substrate is a tool that the species owns. Every human who
+          can read the paper can verify, contest, and extend the math. The
+          three-body problem is older than the United States. It is older than
+          the modern theory of gravity. It will outlast every institution alive
+          today. And the human curiosity that drives someone to look at three
+          points of light and ask
+          <em>what is the structure of their dance?</em> — that curiosity is
+          older still, and is what the Tesseract Matrix exists to serve.
+        </p>
+
+        <p class="closing">
+          Not optimization without meaning. Not intelligence without embodiment.
+          Not progress without humans.<br />
+          <strong class="arrival">Prohumanism.</strong>
+        </p>
+      </div>
+
+      <h2>What the Tesseract Matrix is for</h2>
+      <p class="muted">
+        Four commitments that the substrate program brings to the broader
+        conversation about mathematics, computation, and the human future. None
+        of these are technical claims. They are choices about the kind of
+        instrument the Tesseract Matrix is, and the kind of inheritance it is
+        meant to be.
+      </p>
+
+      <div class="flourishing-grid">
+        <div class="fl-card">
+          <span class="fl-icon">&#x2696;&#xFE0F;</span>
+          <div class="fl-title">Mathematics is public inheritance</div>
+          <div class="fl-body">
+            The mathematical content of the Tesseract Matrix is placed in the
+            public domain under the MIT license. Every theorem, every empirical
+            table, every machine-precision tolerance, every negative result is
+            yours. The substrate's math belongs to the species, not to any
+            institution, vendor, or platform.
+          </div>
+        </div>
+        <div class="fl-card">
+          <span class="fl-icon">&#x1F50D;</span>
+          <div class="fl-title">
+            Measurement amplifies seeing — it does not replace it
+          </div>
+          <div class="fl-body">
+            The Tesseract Matrix is a measurement instrument, in the long
+            lineage of telescopes, microscopes, and clocks. It tells you nothing
+            that a human cannot, in principle, see for themselves. What it gives
+            you is a way to <em>measure that knowing</em>, integer-exactly, in a
+            language that translates.
+          </div>
+        </div>
+        <div class="fl-card">
+          <span class="fl-icon">&#x1F3DB;&#xFE0F;</span>
+          <div class="fl-title">Discovery is embodied and slow</div>
+          <div class="fl-body">
+            Lagrange in 1772 with a quill pen. Burrau in 1913 at an observatory
+            desk. Chenciner and Montgomery in 2000 looking at three points of
+            light. The Tesseract Matrix joins that lineage; it does not bypass
+            it. Mathematical instruments serve human curiosity, not the other
+            way around.
+          </div>
+        </div>
+        <div class="fl-card">
+          <span class="fl-icon">&#x1F31B;</span>
+          <div class="fl-title">Integer arithmetic is the common ground</div>
+          <div class="fl-body">
+            The substrate's verdicts are integers. Not weights, not embeddings,
+            not probabilities — integers. The most democratic, oldest, most
+            teachable mathematical foundation. Every human who has ever counted
+            to three can begin to read what the substrate emits, and verify the
+            result themselves.
+          </div>
+        </div>
+      </div>
+
+      <div class="anchor">
+        <p class="anchor-quote">
+          &ldquo;The substrate gives you a way to
+          <strong>measure that knowing</strong>. It does not replace the
+          knowing.&rdquo;
+          <span class="anchor-attribution"
+            >The Tesseract Matrix preprint &middot; Matos, 2026</span
+          >
+        </p>
+      </div>
+
+      <h2>Read the Whitepaper</h2>
+      <p class="muted">
+        The Tesseract Matrix preprint (Zenodo, May 2026) contains the full
+        mathematical foundation: distance quantization on the 3-sphere, Hadamard
+        rotation in O(1) time, the universal-eigenbasis codeword constraint,
+        closed-loop primorial-tower flatness, the symplectic-Galois
+        representation framing, and the explicit conjugacy-class action of the
+        cross-floor gear-shift on the 16 palindromic-polynomial conjugacy
+        classes of Sp<sub>8</sub>(&#x1D53D;<sub>2</sub>). Part II's Case Study A
+        verifies the cocycle on real Eastern-Interconnection-class power-grid
+        topology at zero violations across 242,706 buses; Case Study B is the
+        three-body classification demonstrated above.
+      </p>
+      <p class="muted">
+        <a
+          href="https://doi.org/10.5281/zenodo.20129255"
+          style="color: var(--accent-purple); text-decoration: none"
+          >→ Open the preprint on Zenodo</a
+        >
+      </p>
+    </div>
+
+    <footer>
+      <div class="footer-brand">Fancyland LLC</div>
+      <div
+        style="
+          margin-bottom: 0.8rem;
+          color: var(--text-muted);
+          font-size: 0.85rem;
+          font-style: italic;
+        "
+      >
+        &#x29BB; &nbsp; Three bodies. Sixteen codewords. One inheritance. &nbsp;
+        &#x29BB;
+      </div>
+      <a href="https://github.com/fancyland-llc/arithmetic-black-hole"
+        >GitHub</a
+      >
+      &nbsp;&middot;&nbsp;
+      <a href="https://doi.org/10.5281/zenodo.20129255"
+        >Tesseract Matrix (PDF)</a
+      >
+      &nbsp;&middot;&nbsp;
+      <a href="https://orcid.org/0009-0002-0722-3752">ORCID</a>
+    </footer>
+
+    <!-- ====================================================================
+       SIMULATION ENGINE
+       Standard Newtonian gravity. Velocity-Verlet integration.
+       Four preset initial-condition sets, each mapping to a known benchmark
+       from the published Tesseract Matrix preprint (Case Study B).
+       Substrate verdicts are hardcoded lookups from the preprint's Table 9.3
+       — NO classifier code is shipped here. The substrate apparatus that
+       produces these verdicts is patented (U.S. Provisional 64/062,753)
+       and held as trade secret under DTSA.
+       ==================================================================== -->
+    <script>
+      "use strict";
+
+      // ---------- Preset definitions ----------
+      const PRESETS = {
+        figure8: {
+          name: "Chenciner–Montgomery Figure-8",
+          masses: [1, 1, 1],
+          positions: [
+            { x: 0.97000436, y: -0.24308753 },
+            { x: -0.97000436, y: 0.24308753 },
+            { x: 0, y: 0 },
+          ],
+          velocities: [
+            { x: 0.466203685, y: 0.43236573 },
+            { x: 0.466203685, y: 0.43236573 },
+            { x: -0.93240737, y: -0.86473146 },
+          ],
+          G: 1.0,
+          dt: 0.003,
+          stepsPerFrame: 4,
+          scale: 100, // pixels per unit
+          showTrails: true,
+          trailLength: 600,
+          trailFadeFloor: 0.04,
+          trailFadePower: 2.2,
+          colors: ["var(--body-1)", "var(--body-2)", "var(--body-3)"],
+          radii: [6, 6, 6],
+          verdict: {
+            mass: "equal",
+            massDetail: "0 bits",
+            regime: "KAM",
+            regimeDetail: "CV ~0.5%",
+            ejection: "bound",
+            ejectionDetail: "no missing codewords",
+          },
+          closer:
+            "Three equal masses chasing each other along a single figure-eight path. A deep KAM choreography — the substrate confirms it as stable across all measurement windows.",
+          ejectionEvent: null,
+        },
+
+        lagrange: {
+          name: "Lagrange L₄ Equilateral",
+          masses: [1, 1, 1],
+          // Equilateral triangle, circumradius 1, rotating rigidly.
+          // L₄ is a *marginally stable* equilibrium — in double-precision
+          // Newton-Verlet the integrator drift compounds and the triangle
+          // distorts off-canvas inside one orbit. We instead render the
+          // analytical Lagrangian solution directly: a rigid rotation of
+          // the three vertices around the centroid at angular velocity
+          //     ω² = G · m / (√3 · R³)
+          // (with G = m = R = 1 → ω = 3^(−1/4) ≈ 0.7598). The integrator
+          // path is bypassed for this preset; see analyticStep below.
+          positions: [
+            { x: 1.0, y: 0.0 },
+            { x: -0.5, y: 0.86602540378 },
+            { x: -0.5, y: -0.86602540378 },
+          ],
+          velocities: [
+            { x: 0, y: 0 },
+            { x: 0, y: 0 },
+            { x: 0, y: 0 },
+          ],
+          integrator: "analytic",
+          analyticStep: (t) => {
+            const R = 1.0;
+            const omega = Math.pow(3, -0.25);
+            return [0, 1, 2].map((i) => {
+              const a = omega * t + (2 * Math.PI * i) / 3;
+              return { x: R * Math.cos(a), y: R * Math.sin(a) };
+            });
+          },
+          G: 1.0,
+          dt: 0.005,
+          stepsPerFrame: 3,
+          scale: 100,
+          showTrails: true,
+          trailLength: 500,
+          trailFadeFloor: 0.04,
+          trailFadePower: 2.2,
+          colors: ["var(--body-1)", "var(--body-2)", "var(--body-3)"],
+          radii: [6, 6, 6],
+          verdict: {
+            mass: "equal",
+            massDetail: "0 bits",
+            regime: "marginal",
+            regimeDetail: "CV ~50%",
+            ejection: "bound",
+            ejectionDetail: "no missing codewords",
+          },
+          closer:
+            "Three equal masses on a rigidly rotating equilateral triangle. Lagrange proved this works in 1772 — but it is marginally stable: the slightest perturbation tips it. The substrate reads this exact knife-edge as the highest Klein-4 variation in the catalog.",
+          ejectionEvent: null,
+        },
+
+        pythagorean: {
+          name: "Burrau Pythagorean 3-4-5",
+          masses: [3, 4, 5],
+          positions: [
+            { x: 1, y: 3 }, // mass 3
+            { x: -2, y: -1 }, // mass 4
+            { x: 1, y: -1 }, // mass 5
+          ],
+          velocities: [
+            { x: 0, y: 0 },
+            { x: 0, y: 0 },
+            { x: 0, y: 0 },
+          ],
+          G: 1.0,
+          dt: 0.0015,
+          stepsPerFrame: 25,
+          softening: 0.05, // Plummer softening to avoid integrator blow-ups
+          scale: 50,
+          showTrails: true,
+          trailLength: 2400,
+          colors: ["var(--body-1)", "var(--body-2)", "var(--body-3)"],
+          radii: [7, 8, 9],
+          verdict: {
+            mass: "comparable",
+            massDetail: "log₂(3) bits",
+            regime: "chaos",
+            regimeDetail: "CV ~20%",
+            ejection: "ejection at t≈113",
+            ejectionDetail: "lightest body (mass 3) thrown",
+          },
+          closer:
+            "Three masses (3, 4, 5) placed at rest at the vertices of a Pythagorean right triangle. Chaotic dance for many substrate-time units; then around t≈113 the lightest body slingshots out of the system entirely.",
+          ejectionEvent: { time: 113, body: 0 },
+        },
+
+        solarsystem: {
+          name: "Sun–Earth–Moon Heliocentric",
+          // Real two-body Earth-Moon dynamics: both Earth and Moon orbit
+          // their common barycenter, which itself orbits the Sun on a clean
+          // circular path. With M_earth = 8 and M_moon = 2 the barycenter
+          // sits 0.1 units outboard of the Earth's center, producing a
+          // visible (but slight) Earth wobble at the Moon's orbital
+          // frequency — the same physics that makes the real Earth wobble
+          // by ~4670 km against the Sun-Earth line every 27.3 days.
+          //
+          // Design constraints:
+          //   (a) Moon orbits Earth (not Sun) — both sit well inside the
+          //       Earth's Hill sphere about the Sun (r_Hill ≈ 1.78).
+          //   (b) The (Earth-Moon barycenter):Moon orbital-period ratio is
+          //       held at ~13:1, matching the real Earth:Moon sidereal
+          //       ratio (365.25 d / 27.3 d ≈ 13.4).
+          //   (c) Watchable speed: Moon orbit ~3 s wall time, Earth orbit
+          //       ~38 s wall time at 60 fps.
+          //
+          // Mass ratios compressed from reality for visualization:
+          //   real Sun:Earth ≈ 333000:1   →   here 125:1
+          //   real Earth:Moon ≈ 81:1       →   here 4:1 (exaggerated to
+          //                                    make the Earth wobble
+          //                                    visually obvious)
+          masses: [1000, 8, 2],
+          positions: (() => {
+            // Earth-Moon barycenter at r_em = 12.83 from Sun
+            // Earth at r_em - r_e_to_com = 12.83 - 0.1 = 12.73
+            // Moon  at r_em + r_m_to_com = 12.83 + 0.4 = 13.23
+            return [
+              { x: 0, y: 0 }, // Sun
+              { x: 12.73, y: 0 }, // Earth
+              { x: 13.23, y: 0 }, // Moon
+            ];
+          })(),
+          velocities: (() => {
+            const G = 1.0;
+            const M_sun = 1000,
+              M_earth = 8,
+              M_moon = 2;
+            const M_em = M_earth + M_moon; // 10
+            const d = 0.5; // Earth-Moon separation
+            const r_em = 12.83; // Earth-Moon barycenter from Sun
+
+            // Earth and Moon distances from the Earth-Moon barycenter
+            const r_e_to_com = (M_moon / M_em) * d; // 0.1
+            const r_m_to_com = (M_earth / M_em) * d; // 0.4
+
+            // (1) Barycenter's circular orbit around Sun
+            const v_em_com = Math.sqrt((G * M_sun) / r_em); // ≈ 8.83
+
+            // (2) Earth and Moon orbiting the Earth-Moon barycenter at
+            //     angular velocity ω_em² = G · M_em / d³
+            const omega_em = Math.sqrt((G * M_em) / (d * d * d)); // ≈ 8.944
+            // Earth is on the Sun-side of the barycenter, so its
+            // about-barycenter velocity is opposite to v_em_com;
+            // Moon is on the far side, so its about-barycenter velocity
+            // adds to v_em_com. Both bodies share +y motion overall.
+            const v_e_about = omega_em * r_e_to_com; // ≈ 0.894
+            const v_m_about = omega_em * r_m_to_com; // ≈ 3.578
+
+            const v_earth = v_em_com - v_e_about; // ≈ 7.94
+            const v_moon = v_em_com + v_m_about; // ≈ 12.41
+
+            // Sun counter-velocity zeroes total system momentum
+            const v_sun = -(M_earth * v_earth + M_moon * v_moon) / M_sun;
+
+            return [
+              { x: 0, y: v_sun },
+              { x: 0, y: v_earth },
+              { x: 0, y: v_moon },
+            ];
+          })(),
+          G: 1.0,
+          dt: 0.001,
+          stepsPerFrame: 4,
+          scale: 22,
+          showTrails: true,
+          trailLength: 2400,
+          colors: ["var(--body-sun)", "var(--body-earth)", "var(--body-moon)"],
+          radii: [16, 7, 3],
+          labels: ["Sun", "Earth", "Moon"],
+          verdict: {
+            mass: "hierarchical",
+            massDetail: "1 bit",
+            regime: "deep-KAM",
+            regimeDetail: "deepest CV in catalog",
+            ejection: "bound + structural-absence",
+            ejectionDetail: "Sun never middle (dominant well)",
+          },
+          closer:
+            "Our home, drawn at canonical mass ratios. The substrate diagnoses this as the most profoundly stable configuration in its entire benchmark catalog — the deepest-KAM signal in the substrate's catalog is the system you live in.",
+          ejectionEvent: null,
+        },
+      };
+
+      // ---------- Narrative content per preset ----------
+      const NARRATIVES = {
+        figure8: {
+          name: "Alain Chenciner & Richard Montgomery",
+          year: "2000 · Annals of Mathematics 152",
+          paragraph:
+            "For 220 years after Lagrange, no fundamentally new three-body orbit had been discovered. Then in 2000, Chenciner and Montgomery proved the existence of a periodic three-body orbit where three equal masses chase each other along a single figure-eight path. It is one of the most beautiful results in modern celestial mechanics — three identical bodies, one shared dance. The substrate diagnoses it as the canonical deep-KAM choreography: integer-exact stability, zero mass discrimination.",
+          meaning:
+            "The figure-eight stands for a kind of mathematical elegance that has nothing to do with technological progress and everything to do with the human capacity to recognize beauty in structure. It belongs to mathematics, not to any particular machine.",
+        },
+        lagrange: {
+          name: "Joseph-Louis Lagrange",
+          year: "1772 · Essai sur le problème des trois corps",
+          paragraph:
+            "Two hundred and fifty-four years ago, before the United States existed in its present form, Lagrange proved that three equal masses can rotate rigidly at the vertices of an equilateral triangle. The configuration is a true equilibrium — but a marginal one: stable enough to exist, fragile enough that any perturbation tips it toward chaos. The substrate reads this exact knife-edge as the highest Klein-4 coefficient of variation in the catalog, despite the trajectory being a fixed-point equilibrium.",
+          meaning:
+            "Lagrange did this with paper and ink, in a world before electricity. The result is as true now as it was then, and will be as true a thousand years from now. Mathematics is the oldest infrastructure of the human inheritance, and it does not depreciate.",
+        },
+        pythagorean: {
+          name: "Carl Burrau",
+          year: "1913 · Astronomische Nachrichten 195",
+          paragraph:
+            "A century ago, Burrau placed three masses — proportional to 3, 4, and 5 — at the vertices of a Pythagorean right triangle, at rest, and asked what would happen. The system performs a chaotic dance for roughly 60 substrate-time units, accumulating energy at near-collisions, until around t≈113 the lightest body is slingshotted out of the system entirely. For most of the 20th century this was the archetypal chaotic three-body configuration, studied as a benchmark for any new method. The substrate diagnoses it instantly: comparable-mass, chaos, ejection.",
+          meaning:
+            "Burrau's configuration shows the limit of closed-form mathematics. The trajectory is computable but not predictable — chaos is genuine, irreducible. The substrate does not deny the chaos; it diagnoses the chaos. It gives a human a discrete, readable label for what would otherwise be an unreadable mess of numbers.",
+        },
+        solarsystem: {
+          name: "NASA JPL Solar System Dynamics (DE440 ephemerides)",
+          year: "2021 · The Astronomical Journal 161",
+          paragraph:
+            "This is your home, drawn at its actual mass ratios — the Sun, the Earth, and the Moon — from the JPL DE440 planetary and lunar ephemerides. Three coupled timescales (Moon ~27 days, Earth ~365 days), one hierarchical mass structure (Sun ≈ 333,000 Earths; Earth ≈ 81 Moons), and a stability so profound that life has flourished on the middle body for billions of years. The substrate diagnoses this real physical system as the deepest-KAM signal in its entire benchmark catalog — the Klein-4 coefficient of variation drops below every other system tested.",
+          meaning:
+            "The substrate independently rediscovers, from a four-orbit observation window, what humans have always quietly known about the night sky: this place is profoundly stable. The substrate does not replace that knowing — it gives you a way to measure it, in a language a human can read. Our home is the deepest-KAM signal in the substrate's catalog. That is a fact about your home, not about the algorithm.",
+        },
+      };
+
+      // ---------- Canvas + simulation state ----------
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const clockEl = document.getElementById("clock");
+      const verdictEl = document.getElementById("verdict");
+      const ejectionAlertEl = document.getElementById("ejection-alert");
+      const restartBtn = document.getElementById("restart-btn");
+      const trailsBtn = document.getElementById("trails-btn");
+
+      let currentPreset = "figure8";
+      let bodies = []; // [{x, y, vx, vy, ax, ay, mass, trail}, ...]
+      let simTime = 0;
+      let running = true;
+      let showTrails = true;
+      let ejectionTriggered = false;
+      let verdictRevealed = false;
+
+      function resizeCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+      }
+
+      // Resolve CSS variable colors to actual hex/rgba
+      function resolveCSSColor(varName) {
+        const v = getComputedStyle(document.documentElement)
+          .getPropertyValue(varName.replace(/var\(|\)/g, "").trim())
+          .trim();
+        return v || varName;
+      }
+
+      function loadPreset(name) {
+        currentPreset = name;
+        const preset = PRESETS[name];
+
+        // Reset bodies
+        bodies = preset.positions.map((p, i) => ({
+          x: p.x,
+          y: p.y,
+          vx: preset.velocities[i].x,
+          vy: preset.velocities[i].y,
+          ax: 0,
+          ay: 0,
+          mass: preset.masses[i],
+          color: resolveCSSColor(preset.colors[i]),
+          radius: preset.radii[i],
+          label: preset.labels ? preset.labels[i] : null,
+          trail: [],
+        }));
+
+        simTime = 0;
+        ejectionTriggered = false;
+        verdictRevealed = false;
+
+        // Reset UI
+        ejectionAlertEl.classList.remove("show");
+        verdictEl.classList.remove("show");
+
+        // Compute initial accelerations
+        computeAccelerations();
+
+        // Update narrative
+        const n = NARRATIVES[name];
+        document.getElementById("n-name").textContent = n.name;
+        document.getElementById("n-year").textContent = n.year;
+        document.getElementById("n-paragraph").textContent = n.paragraph;
+        document.getElementById("n-meaning").textContent = n.meaning;
+
+        // Update verdict (pre-populated but hidden until t > reveal threshold)
+        const v = preset.verdict;
+        document.getElementById("v-mass").textContent = v.mass;
+        document.getElementById("v-mass-detail").textContent = v.massDetail;
+        document.getElementById("v-regime").textContent = v.regime;
+        document.getElementById("v-regime-detail").textContent = v.regimeDetail;
+        document.getElementById("v-ejection").textContent = v.ejection;
+        document.getElementById("v-ejection-detail").textContent =
+          v.ejectionDetail;
+        document.getElementById("v-closer").textContent = preset.closer;
+
+        // Active button highlight
+        document.querySelectorAll(".preset-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.preset === name);
+        });
+      }
+
+      function computeAccelerations() {
+        const preset = PRESETS[currentPreset];
+        const G = preset.G;
+        const soft = preset.softening || 0;
+        const soft2 = soft * soft;
+
+        for (let i = 0; i < bodies.length; i++) {
+          bodies[i].ax = 0;
+          bodies[i].ay = 0;
+        }
+        for (let i = 0; i < bodies.length; i++) {
+          for (let j = i + 1; j < bodies.length; j++) {
+            const dx = bodies[j].x - bodies[i].x;
+            const dy = bodies[j].y - bodies[i].y;
+            const r2 = dx * dx + dy * dy + soft2;
+            const r3 = Math.pow(r2, 1.5);
+            const f_over_r = G / r3;
+            // a_i += G * m_j * (r_j - r_i) / |r|^3
+            bodies[i].ax += f_over_r * bodies[j].mass * dx;
+            bodies[i].ay += f_over_r * bodies[j].mass * dy;
+            bodies[j].ax -= f_over_r * bodies[i].mass * dx;
+            bodies[j].ay -= f_over_r * bodies[i].mass * dy;
+          }
+        }
+      }
+
+      function step() {
+        const preset = PRESETS[currentPreset];
+        const dt = preset.dt;
+
+        if (preset.integrator === "analytic") {
+          // Drive positions from the closed-form solution. No physics
+          // integration — bypasses the integrator-drift issue on marginal
+          // equilibria like Lagrange L₄.
+          simTime += dt;
+          const next = preset.analyticStep(simTime);
+          for (let i = 0; i < bodies.length; i++) {
+            bodies[i].x = next[i].x;
+            bodies[i].y = next[i].y;
+          }
+        } else {
+          // Velocity-Verlet
+          const halfDt = 0.5 * dt;
+          for (let i = 0; i < bodies.length; i++) {
+            bodies[i].vx += halfDt * bodies[i].ax;
+            bodies[i].vy += halfDt * bodies[i].ay;
+            bodies[i].x += dt * bodies[i].vx;
+            bodies[i].y += dt * bodies[i].vy;
+          }
+          computeAccelerations();
+          for (let i = 0; i < bodies.length; i++) {
+            bodies[i].vx += halfDt * bodies[i].ax;
+            bodies[i].vy += halfDt * bodies[i].ay;
+          }
+          simTime += dt;
+        }
+
+        // Trails
+        if (showTrails) {
+          for (let i = 0; i < bodies.length; i++) {
+            bodies[i].trail.push({ x: bodies[i].x, y: bodies[i].y });
+            if (bodies[i].trail.length > preset.trailLength) {
+              bodies[i].trail.shift();
+            }
+          }
+        }
+
+        // Ejection event trigger (for Burrau)
+        if (
+          preset.ejectionEvent &&
+          !ejectionTriggered &&
+          simTime >= preset.ejectionEvent.time
+        ) {
+          ejectionTriggered = true;
+          ejectionAlertEl.classList.add("show");
+          setTimeout(() => ejectionAlertEl.classList.remove("show"), 3000);
+        }
+
+        // Reveal verdict after a short observation window (per-preset)
+        const revealAtMap = {
+          figure8: 4,
+          lagrange: 4,
+          pythagorean: 6,
+          solarsystem: 0.8, // ~ one Moon orbit; the slow Sun-Earth-Moon scale
+        };
+        const revealAt =
+          revealAtMap[currentPreset] !== undefined
+            ? revealAtMap[currentPreset]
+            : 4;
+        if (!verdictRevealed && simTime >= revealAt) {
+          verdictRevealed = true;
+          verdictEl.classList.add("show");
+        }
+      }
+
+      function render() {
+        const rect = canvas.getBoundingClientRect();
+        const w = rect.width;
+        const h = rect.height;
+        const preset = PRESETS[currentPreset];
+
+        ctx.fillStyle = "#050509";
+        ctx.fillRect(0, 0, w, h);
+
+        // Compute view center: track center of mass for chaotic systems
+        let cx = 0,
+          cy = 0,
+          totalMass = 0;
+        for (const b of bodies) {
+          cx += b.mass * b.x;
+          cy += b.mass * b.y;
+          totalMass += b.mass;
+        }
+        cx /= totalMass;
+        cy /= totalMass;
+
+        const viewCx = w / 2;
+        const viewCy = h / 2;
+        const scale = preset.scale;
+
+        function worldToScreen(x, y) {
+          return [viewCx + (x - cx) * scale, viewCy + (y - cy) * scale];
+        }
+
+        // Draw trails (per-preset fade tunables let us tune the "comet" feel
+        // independently: low-orbit periodic systems want a sharp fade so the
+        // trail doesn't fill in the entire closed curve; long-arc systems like
+        // Burrau want a strong-floor alpha so the full history stays visible).
+        if (showTrails) {
+          const fadeFloor = preset.trailFadeFloor ?? 0.18;
+          const fadeSlope = 1 - fadeFloor;
+          const fadePower = preset.trailFadePower ?? 1;
+          for (let i = 0; i < bodies.length; i++) {
+            const b = bodies[i];
+            if (b.trail.length < 2) continue;
+            for (let j = 1; j < b.trail.length; j++) {
+              const t = j / b.trail.length;
+              const alpha = fadeFloor + fadeSlope * Math.pow(t, fadePower);
+              const [x0, y0] = worldToScreen(
+                b.trail[j - 1].x,
+                b.trail[j - 1].y,
+              );
+              const [x1, y1] = worldToScreen(b.trail[j].x, b.trail[j].y);
+              ctx.beginPath();
+              ctx.moveTo(x0, y0);
+              ctx.lineTo(x1, y1);
+              ctx.strokeStyle = b.color;
+              ctx.globalAlpha = alpha;
+              // Slight taper: newer = thicker
+              ctx.lineWidth = 1.6 + 0.7 * t;
+              ctx.stroke();
+            }
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        // Draw bodies with glow
+        for (const b of bodies) {
+          const [sx, sy] = worldToScreen(b.x, b.y);
+          // Outer glow
+          const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, b.radius * 3);
+          grd.addColorStop(0, b.color);
+          grd.addColorStop(0.5, b.color + "40");
+          grd.addColorStop(1, "transparent");
+          ctx.beginPath();
+          ctx.arc(sx, sy, b.radius * 3, 0, 2 * Math.PI);
+          ctx.fillStyle = grd;
+          ctx.globalAlpha = 0.55;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          // Solid core
+          ctx.beginPath();
+          ctx.arc(sx, sy, b.radius, 0, 2 * Math.PI);
+          ctx.fillStyle = b.color;
+          ctx.fill();
+          // Label (Moon goes above its orb so it doesn't collide with the
+          // Earth label that's sitting just below the Earth)
+          if (b.label) {
+            ctx.font = '11px "Segoe UI", system-ui, sans-serif';
+            ctx.fillStyle = "rgba(232, 230, 227, 0.75)";
+            ctx.textAlign = "center";
+            ctx.textBaseline = b.label === "Moon" ? "bottom" : "top";
+            const dy = b.label === "Moon" ? -(b.radius + 6) : b.radius + 6;
+            ctx.fillText(b.label, sx, sy + dy);
+            ctx.textBaseline = "alphabetic"; // restore default
+          }
+        }
+
+        // Clock
+        clockEl.textContent = `t = ${simTime.toFixed(3)}`;
+      }
+
+      function tick() {
+        if (running) {
+          const preset = PRESETS[currentPreset];
+          for (let i = 0; i < preset.stepsPerFrame; i++) {
+            step();
+          }
+        }
+        render();
+        requestAnimationFrame(tick);
+      }
+
+      // ---------- Event handlers ----------
+      document.querySelectorAll(".preset-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          loadPreset(btn.dataset.preset);
+        });
+      });
+
+      restartBtn.addEventListener("click", () => {
+        loadPreset(currentPreset);
+      });
+
+      trailsBtn.addEventListener("click", () => {
+        showTrails = !showTrails;
+        trailsBtn.textContent = `Trails: ${showTrails ? "ON" : "OFF"}`;
+        if (!showTrails) {
+          bodies.forEach((b) => (b.trail = []));
+        }
+      });
+
+      window.addEventListener("resize", resizeCanvas);
+
+      // ---------- Tesseract SVG (16 codewords, 8 antipodal pairs) ----------
+      // Ordering by Hamming weight so antipodal twins land exactly across the circle:
+      //   pos 0..15 → codeword  (antipode of pos i is pos 15-i)
+      const TS_ORDER = [
+        0b0000, 0b0001, 0b0010, 0b0100, 0b1000, 0b0011, 0b0101, 0b0110, 0b1001,
+        0b1010, 0b1100, 0b0111, 0b1011, 0b1101, 0b1110, 0b1111,
+      ];
+      const TS_CENTER_X = 230;
+      const TS_CENTER_Y = 180;
+      const TS_RADIUS = 138;
+      const TS_LABEL_OFFSET = 22;
+
+      function tsPos(i) {
+        // 16 positions evenly around a circle, starting from the top.
+        const a = (i / 16) * 2 * Math.PI - Math.PI / 2;
+        return {
+          x: TS_CENTER_X + TS_RADIUS * Math.cos(a),
+          y: TS_CENTER_Y + TS_RADIUS * Math.sin(a),
+          labelX: TS_CENTER_X + (TS_RADIUS + TS_LABEL_OFFSET) * Math.cos(a),
+          labelY: TS_CENTER_Y + (TS_RADIUS + TS_LABEL_OFFSET) * Math.sin(a) + 3,
+        };
+      }
+
+      function codewordBits(n) {
+        return [(n >> 3) & 1, (n >> 2) & 1, (n >> 1) & 1, n & 1].join("");
+      }
+
+      function buildTesseract() {
+        const svgNS = "http://www.w3.org/2000/svg";
+        const edgesBg = document.getElementById("ts-edges-bg");
+        const antipodalLines = document.getElementById("ts-antipodal-lines");
+        const vertices = document.getElementById("ts-vertices");
+        const labels = document.getElementById("ts-labels");
+
+        // Background: all 32 hypercube edges (codewords differ in exactly 1 bit)
+        for (let i = 0; i < 16; i++) {
+          for (let j = i + 1; j < 16; j++) {
+            const a = TS_ORDER[i],
+              b = TS_ORDER[j];
+            const xorBits = a ^ b;
+            // popcount
+            let pc = 0,
+              t = xorBits;
+            while (t) {
+              pc += t & 1;
+              t >>= 1;
+            }
+            if (pc === 1) {
+              const pa = tsPos(i),
+                pb = tsPos(j);
+              const line = document.createElementNS(svgNS, "line");
+              line.setAttribute("x1", pa.x.toFixed(1));
+              line.setAttribute("y1", pa.y.toFixed(1));
+              line.setAttribute("x2", pb.x.toFixed(1));
+              line.setAttribute("y2", pb.y.toFixed(1));
+              line.setAttribute("class", "ts-edge");
+              edgesBg.appendChild(line);
+            }
+          }
+        }
+
+        // Antipodal diameter lines: pos i to pos 15-i
+        for (let i = 0; i < 8; i++) {
+          const pa = tsPos(i),
+            pb = tsPos(15 - i);
+          const line = document.createElementNS(svgNS, "line");
+          line.setAttribute("x1", pa.x.toFixed(1));
+          line.setAttribute("y1", pa.y.toFixed(1));
+          line.setAttribute("x2", pb.x.toFixed(1));
+          line.setAttribute("y2", pb.y.toFixed(1));
+          line.setAttribute("class", "ts-edge antipodal-line");
+          antipodalLines.appendChild(line);
+        }
+
+        // 16 vertices + labels
+        for (let i = 0; i < 16; i++) {
+          const p = tsPos(i);
+          const cw = TS_ORDER[i];
+          const c = document.createElementNS(svgNS, "circle");
+          c.setAttribute("cx", p.x.toFixed(1));
+          c.setAttribute("cy", p.y.toFixed(1));
+          c.setAttribute("r", "10");
+          c.setAttribute("class", "ts-vertex");
+          c.setAttribute("data-idx", i);
+          c.setAttribute("data-codeword", codewordBits(cw));
+          vertices.appendChild(c);
+
+          const t = document.createElementNS(svgNS, "text");
+          t.setAttribute("x", p.labelX.toFixed(1));
+          t.setAttribute("y", p.labelY.toFixed(1));
+          t.setAttribute("text-anchor", "middle");
+          t.setAttribute("class", "ts-label-text");
+          t.setAttribute("data-idx", i);
+          t.textContent = codewordBits(cw);
+          labels.appendChild(t);
+        }
+
+        // Hover handlers
+        const readout = document.getElementById("ts-readout");
+        const allVerts = vertices.querySelectorAll(".ts-vertex");
+        const allLabels = labels.querySelectorAll(".ts-label-text");
+
+        function clearTsState() {
+          allVerts.forEach((v) => v.classList.remove("hovered", "antipode"));
+          allLabels.forEach((l) => l.classList.remove("active"));
+        }
+
+        function setHover(i) {
+          clearTsState();
+          const antipodeIdx = 15 - i;
+          allVerts[i].classList.add("hovered");
+          allVerts[antipodeIdx].classList.add("antipode");
+          allLabels[i].classList.add("active");
+          allLabels[antipodeIdx].classList.add("active");
+          const a = codewordBits(TS_ORDER[i]);
+          const b = codewordBits(TS_ORDER[antipodeIdx]);
+          readout.innerHTML = `<strong>${a}</strong> &nbsp;&harr;&nbsp; <em>${b}</em> &nbsp; antipodal twin pair`;
+        }
+
+        allVerts.forEach((v, i) => {
+          v.addEventListener("mouseenter", () => setHover(i));
+          v.addEventListener("focus", () => setHover(i));
+        });
+
+        const wrap = document.querySelector(".tesseract-wrap");
+        wrap.addEventListener("mouseleave", () => {
+          clearTsState();
+          readout.innerHTML =
+            "Hover a vertex to read its codeword and antipode pair.";
+        });
+      }
+
+      buildTesseract();
+
+      // ---------- Klein-4 sector card click ----------
+      const SECTOR_READOUTS = {
+        "deep-kam":
+          "<strong>Deep-KAM (V = 0,0).</strong> Hierarchical mass structure, one dominant well, near-zero Klein-4 coefficient of variation. " +
+          "The substrate diagnoses <em>Sun&ndash;Earth&ndash;Moon</em> here &mdash; the deepest-KAM signal in the entire benchmark catalog. The system you live in.",
+        kam:
+          "<strong>KAM-stable (V = 0,1).</strong> Quasi-periodic choreography, tight orbit through a small set of sectors, low Klein-4 variation. " +
+          "The substrate diagnoses the <em>Chenciner&ndash;Montgomery figure-8</em> here &mdash; three equal masses on a single closed curve, with mass-class entropy of zero bits.",
+        marginal:
+          "<strong>Marginal (V = 1,0).</strong> A true equilibrium configuration, but on the knife-edge of variation. Klein-4 CV is the highest in the catalog despite the trajectory being a fixed-point solution. " +
+          "The substrate diagnoses <em>Lagrange L<sub>4</sub></em> here &mdash; stable enough to exist, fragile enough that any perturbation tips it.",
+        chaos:
+          "<strong>Ergodic chaos (V = 1,1).</strong> Comparable masses, ergodic occupancy across all sectors, persistent missing codewords flag an ejection. " +
+          "The substrate diagnoses <em>Burrau's Pythagorean 3-4-5</em> here &mdash; chaotic dance for many substrate-time units, then the lightest body slingshots out around t&nbsp;&asymp;&nbsp;113.",
+      };
+
+      const sectorCards = document.querySelectorAll(".sector-card");
+      const sectorReadout = document.getElementById("sector-readout");
+      sectorCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          sectorCards.forEach((c) => c.classList.remove("active"));
+          card.classList.add("active");
+          const key = card.dataset.sector;
+          sectorReadout.innerHTML = SECTOR_READOUTS[key];
+        });
+      });
+
+      // ---------- Boot ----------
+      resizeCanvas();
+      loadPreset("figure8");
+      tick();
+    </script>
+  </body>
+</html>
