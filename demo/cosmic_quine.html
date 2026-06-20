@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Cosmic Quine — The Origin of It All</title>
+  <meta name="description" content="The origin of it all — where the four forces, the particles, and the expanding cosmos come from: one simple, elegant principle that has been hiding in plain sight in the whole numbers all along. Matos (2026).">
+  <style>
+    :root {
+      --bg: #0a0a0f; --bg-card: #12121a; --bg-card-hover: #1a1a25; --bg-canvas: #050509;
+      --text: #e8e6e3; --text-muted: #9a9a9a;
+      --accent-purple: #9d8cff; --accent-teal: #5dcaa5; --accent-blue: #85b7eb;
+      --accent-coral: #f0997b; --accent-pink: #ed93b1; --accent-amber: #efb027; --accent-gold: #d4af37;
+      --accent-cosmic: #7db4ff; --border: rgba(255,255,255,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; }
+    .container { max-width: 880px; margin: 0 auto; padding: 2rem; }
+    .back { display: inline-block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .back:hover { color: var(--accent-cosmic); }
+
+    header { text-align: center; padding: 2.5rem 0 3rem; border-bottom: 1px solid var(--border); margin-bottom: 3rem; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.74rem; color: var(--accent-cosmic); margin-bottom: 1.2rem; }
+    .title-row { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    .glyph { font-size: 1.6rem; color: var(--accent-cosmic); opacity: 0.5; animation: glyphpulse 6s ease-in-out infinite; }
+    .glyph.r { animation-delay: 3s; }
+    @keyframes glyphpulse { 0%,100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.78; transform: scale(1.16); } }
+    .infinity-art { margin: 1.6rem auto 0; line-height: 0; }
+    .infinity-art canvas { width: 382px; height: 167px; display: inline-block; background: transparent; border: none; }
+    h1 { font-size: 2.8rem; font-weight: 300; letter-spacing: 0.05em;
+      background: linear-gradient(120deg, var(--accent-cosmic), var(--accent-purple) 38%, var(--accent-teal) 72%, var(--accent-blue));
+      background-size: 260% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      animation: shimmer 10s ease-in-out infinite; }
+    @keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .subtitle { color: var(--text-muted); font-size: 1.18rem; font-weight: 300; max-width: 600px; margin: 1.1rem auto 0; }
+    .doi { margin-top: 1.3rem; font-size: 0.82rem; color: var(--text-muted); }
+    .doi a { color: var(--accent-cosmic); text-decoration: none; }
+    .doi a:hover { text-decoration: underline; }
+
+    h2 { font-size: 1.6rem; font-weight: 400; margin: 4rem 0 1.5rem; color: var(--accent-cosmic); display: flex; align-items: center; gap: 0.7rem; }
+    h2::before { content: ''; width: 4px; height: 1.5rem; border-radius: 2px; background: linear-gradient(to bottom, var(--accent-cosmic), var(--accent-teal)); }
+    p { margin-bottom: 1.3rem; }
+    p.big { font-size: 1.12rem; }
+    em.k { color: var(--accent-teal); font-style: normal; font-weight: 600; }
+    em.q { color: var(--accent-cosmic); font-style: italic; }
+    strong { color: var(--text); }
+    .lede { font-size: 1.22rem; color: var(--text-muted); border-left: 3px solid var(--accent-cosmic); padding-left: 1.6rem; margin: 2rem 0; }
+    .sep { width: 50px; height: 1px; background: var(--border); margin: 3.5rem auto; }
+
+    .math-block { display: block; text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.03); border-radius: 8px;
+      margin: 1.6rem 0; font-family: 'Cambria Math','Times New Roman',serif; font-size: 1.4rem; font-style: italic; }
+    .highlight-box { background: linear-gradient(135deg, rgba(125,180,255,0.10), rgba(157,140,255,0.07));
+      border: 1px solid rgba(125,180,255,0.28); border-radius: 14px; padding: 1.6rem 1.85rem; margin: 2.2rem 0; }
+    .highlight-box h3 { color: var(--accent-cosmic); margin: 0 0 0.6rem; font-size: 1.15rem; }
+    .highlight-box p:last-child { margin-bottom: 0; }
+    .note { border: 1px solid var(--border); border-radius: 14px; padding: 1.6rem 1.85rem; margin: 2.2rem 0; background: var(--bg-card); }
+    .note h3 { color: var(--accent-cosmic); margin: 0 0 0.6rem; font-size: 1.15rem; }
+    .note p { margin: 0; }
+    .cta { display: inline-block; padding: 0.8rem 1.6rem; border-radius: 999px; border: 1px solid var(--accent-cosmic);
+      color: var(--accent-cosmic); background: rgba(125,180,255,0.08); font-size: 1rem; transition: all 0.2s; }
+    .cta:hover { background: rgba(125,180,255,0.2); color: var(--accent-cosmic); }
+
+    figure { margin: 2.2rem 0; text-align: center; }
+    figcaption { color: var(--text-muted); font-size: 0.86rem; margin-top: 0.9rem; }
+    .panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; }
+    .angle-svg { max-width: 420px; width: 100%; }
+    .ray { cursor: pointer; transition: opacity 0.2s; }
+    .ray:hover { opacity: 1 !important; }
+    .force-read { margin-top: 1.2rem; height: 7rem; overflow-y: auto; background: rgba(255,255,255,0.03); border-radius: 8px; padding: 1.1rem 1.4rem; text-align: left; }
+    .force-read .name { font-weight: 600; }
+    .shells { display: flex; align-items: flex-end; justify-content: center; gap: 1.6rem; height: 220px; margin: 0.5rem 0 0; }
+    .shell { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 0.5rem; }
+    .shell .bar { width: 46px; border-radius: 6px 6px 0 0;
+      background: linear-gradient(to top, var(--accent-cosmic), var(--accent-purple)); box-shadow: 0 0 16px rgba(125,180,255,0.25); }
+    .shell .bar.zero { height: 4px !important; background: var(--text-muted); box-shadow: none; border-radius: 2px; }
+    .shell .lab { font-family: 'Consolas','Monaco',monospace; font-size: 0.9rem; }
+    .shell .val { font-family: 'Consolas','Monaco',monospace; color: var(--accent-cosmic); font-weight: 600; }
+
+    canvas { max-width: 100%; border-radius: 12px; background: var(--bg-canvas); border: 1px solid var(--border); }
+    .canvas-cap { color: var(--text-muted); font-size: 0.86rem; margin-top: 0.8rem; }
+
+    details.seam { margin: 2.5rem 0; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); }
+    details.seam summary { cursor: pointer; padding: 1rem 1.4rem; color: var(--text-muted); font-size: 0.92rem; list-style: none; }
+    details.seam summary::-webkit-details-marker { display: none; }
+    details.seam summary::before { content: '▸ '; color: var(--accent-cosmic); }
+    details.seam[open] summary::before { content: '▾ '; }
+    details.seam .body { padding: 0 1.4rem 1.25rem; color: var(--text-muted); font-size: 0.94rem; }
+
+    .arrival { text-align: center; margin: 4rem 0 1rem; }
+    .arrival .word { font-size: 3.6rem; font-weight: 700; color: var(--accent-teal); animation: breathe 7s ease-in-out infinite; }
+    @keyframes breathe { 0%,100% { text-shadow: 0 0 18px rgba(93,202,165,0.30); } 50% { text-shadow: 0 0 36px rgba(93,202,165,0.62), 0 0 70px rgba(93,202,165,0.25); } }
+    .arrival .under { color: var(--text-muted); font-size: 1.05rem; max-width: 560px; margin: 1.1rem auto 0; }
+    .pills { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin: 2rem 0 0; }
+    .pills span { font-size: 0.72rem; padding: 0.25rem 0.6rem; border-radius: 4px;
+      background: rgba(125,180,255,0.1); border: 1px solid rgba(125,180,255,0.2); color: var(--accent-cosmic); }
+
+    footer { text-align: center; padding: 4rem 0 2rem; margin-top: 3rem; border-top: 1px solid var(--border); color: var(--text-muted); }
+    footer .attribution { font-size: 0.92rem; margin-bottom: 0.8rem; }
+    footer .rabbits { font-size: 1.4rem; margin: 1rem 0; letter-spacing: 0.3rem; }
+    footer .year { font-size: 0.85rem; opacity: 0.7; }
+    footer a { color: var(--accent-cosmic); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    a { color: var(--accent-teal); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent-cosmic); }
+    html { scroll-behavior: smooth; }
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 2rem; }
+      .glyph { font-size: 1.2rem; }
+      .arrival .word { font-size: 2.6rem; }
+      .shells { gap: 1rem; height: 180px; }
+      .shell .bar { width: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="index.html">&larr; Back to the demos</a>
+
+    <header>
+      <div class="eyebrow">Fancyland LLC &middot; Lattice OS</div>
+      <div class="title-row">
+        <h1>The Cosmic Quine</h1>
+      </div>
+      <div class="infinity-art" aria-hidden="true">
+        <canvas id="infcanvas" width="720" height="315"></canvas>
+      </div>
+      <p class="subtitle">The origin of it all &mdash; fundamental forces, subatomic particles, dark energy</p>
+      <p class="doi">Matos (2026) &mdash; <a href="https://doi.org/10.5281/zenodo.20776207">DOI: 10.5281/zenodo.20776207</a></p>
+    </header>
+
+    <!-- ===== WONDER ===== -->
+    <section>
+      <p class="lede">
+        Look up on a clear night, and the light reaching your eyes left some of those stars before there were any people to
+        look back. There are more of them over your head than there are grains of sand on every shore on Earth. And all of
+        it &mdash; that starlight, the warmth of the Sun, the matter in your own hands, the slow widening of the dark
+        between the galaxies &mdash; grows from <em class="k">one simple idea</em> &mdash; an elegance that has been hiding in plain sight for as long as human beings have known how to count.
+      </p>
+      <p class="big">
+        That is the awe this page is about: not how unthinkably vast the universe is, but how <em>simple and elegant</em>
+        the thing beneath it turns out to be &mdash; an elegance that has waited in the plain whole numbers since the first
+        person counted on their fingers, in full view, for anyone willing to notice. Where the forces come from, where the
+        particles come from, why the sky keeps opening &mdash; all of it from a single fundamental principle in
+        mathematics. Here it is. Here is what you see.
+      </p>
+    </section>
+
+    <!-- ===== THE SEED ===== -->
+    <section>
+      <h2>Begin where the universe begins</h2>
+      <p>
+        Start with two things you already know how to do: <strong>add</strong> and <strong>multiply</strong>. The whole
+        universe, it turns out, is built on the way these two refuse to get along.
+      </p>
+      <p>
+        <strong>Adding</strong> is <em class="k">counting up</em> &mdash; taking a step of a fixed size. Add three, and you
+        can always undo it by subtracting three; nothing is lost. It is the simple, reversible bookkeeping of
+        <em>where things are.</em> Think of it as space. <strong>Multiplying</strong> is <em class="k">stretching</em>
+        &mdash; scaling everything up, making sizes that weren't there a moment before. It is how things grow. Think of it
+        as time.
+      </p>
+      <p>
+        Now do the simple experiment the whole universe is built on. Take a number &mdash; say ten &mdash; and run it
+        through both operations. Then do it again, but swap the order:
+      </p>
+      <div class="math-block" style="font-style: normal; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 1.15rem; line-height: 2;">
+        add&nbsp;3, then double:&nbsp;&nbsp; (10 + 3) &times; 2 = <strong style="color:var(--accent-cosmic)">26</strong><br>
+        double, then add&nbsp;3:&nbsp;&nbsp; 10 &times; 2 + 3 = <strong style="color:var(--accent-cosmic)">23</strong>
+      </div>
+      <p>
+        Same number, same two operations &mdash; but the <strong>order</strong> changed the answer. Adding and multiplying
+        can never be swapped cleanly: one order always leaves something behind that the other doesn't (here,
+        exactly 3). And you can't undo your way back to a perfectly clean slate &mdash; there is always a remainder.
+      </p>
+      <p>
+        That remainder is the seed of everything. It is the reason there is a <em>next moment</em> at all &mdash; and a
+        next, and a next. A universe where adding and multiplying <em>did</em> agree would be frozen solid: complete,
+        silent, finished. Ours can't be, because those two operations will never reconcile, so it has to keep taking the
+        next step. That refusal to ever fully settle &mdash; a remainder you can never take back &mdash; is what gives
+        each next moment its single direction: the <em class="q">irreversibility</em> of time.
+      </p>
+    </section>
+
+    <!-- ===== THE FORCES ===== -->
+    <section>
+      <h2>A cube, and the angles in it</h2>
+      <p>
+        From that one restlessness, a shape grows. Take four switches, on or off. Four switches make sixteen combinations
+        &mdash; sixteen corners of a four-dimensional cube, a shape called a <a href="https://en.wikipedia.org/wiki/Tesseract" target="_blank" rel="noopener">tesseract</a>: nothing but sixteen
+        corners and the lines joining them. And between those corners there are only <strong>five possible angles</strong>:
+        0&deg;, 60&deg;, 90&deg;, 120&deg;, 180&deg;. Count the corners, measure the angles &mdash; that's the whole list.
+        And here is the wonder of it: <strong>those five angles are the forces of nature.</strong> Nature didn't reach into
+        a bag of a hundred dials. It took a cube and used the angles between its corners.
+      </p>
+
+      <figure>
+        <div class="panel">
+          <svg class="angle-svg" viewBox="-28 0 456 230" xmlns="http://www.w3.org/2000/svg" aria-label="The five inter-vertex angles">
+            <line x1="50" y1="200" x2="350" y2="200" stroke="rgba(255,255,255,0.12)" stroke-width="1" pointer-events="none"/>
+            <circle cx="200" cy="200" r="4" fill="#e8e6e3" pointer-events="none"/>
+            <g class="ray" data-i="0" style="opacity:0.85">
+              <line x1="200" y1="200" x2="350" y2="200" stroke="#9a9a9a" stroke-width="2.5" pointer-events="none"/>
+              <line x1="215" y1="200" x2="350" y2="200" stroke="transparent" stroke-width="20" pointer-events="stroke"/>
+              <circle cx="350" cy="200" r="6" fill="#9a9a9a"/>
+              <text x="364" y="204" fill="#9a9a9a" font-size="13">0&#176;</text>
+            </g>
+            <g class="ray" data-i="1" style="opacity:0.85">
+              <line x1="200" y1="200" x2="275" y2="70" stroke="#efb027" stroke-width="2.5" pointer-events="none"/>
+              <line x1="208" y1="187" x2="275" y2="70" stroke="transparent" stroke-width="20" pointer-events="stroke"/>
+              <circle cx="275" cy="70" r="6" fill="#efb027"/>
+              <text x="283" y="66" fill="#efb027" font-size="13">60&#176;</text>
+            </g>
+            <g class="ray" data-i="2" style="opacity:0.85">
+              <line x1="200" y1="200" x2="200" y2="48" stroke="#85b7eb" stroke-width="2.5" pointer-events="none"/>
+              <line x1="200" y1="185" x2="200" y2="48" stroke="transparent" stroke-width="20" pointer-events="stroke"/>
+              <circle cx="200" cy="48" r="6" fill="#85b7eb"/>
+              <text x="190" y="40" fill="#85b7eb" font-size="13">90&#176;</text>
+            </g>
+            <g class="ray" data-i="3" style="opacity:0.85">
+              <line x1="200" y1="200" x2="125" y2="70" stroke="#efb027" stroke-width="2.5" pointer-events="none"/>
+              <line x1="192" y1="187" x2="125" y2="70" stroke="transparent" stroke-width="20" pointer-events="stroke"/>
+              <circle cx="125" cy="70" r="6" fill="#efb027"/>
+              <text x="89" y="66" fill="#efb027" font-size="13">120&#176;</text>
+            </g>
+            <g class="ray" data-i="4" style="opacity:0.85">
+              <line x1="200" y1="200" x2="50" y2="200" stroke="#ed93b1" stroke-width="2.5" pointer-events="none"/>
+              <line x1="185" y1="200" x2="50" y2="200" stroke="transparent" stroke-width="20" pointer-events="stroke"/>
+              <circle cx="50" cy="200" r="6" fill="#ed93b1"/>
+              <text x="43" y="204" fill="#ed93b1" font-size="13" text-anchor="end">180&#176;</text>
+            </g>
+          </svg>
+          <div class="force-read" id="force-read">Click an angle to read the force it carries.</div>
+        </div>
+        <figcaption>The five angles between the corners of the tesseract. Click one.</figcaption>
+      </figure>
+
+      <p>
+        <strong>90&deg; &mdash; a right angle. That's light.</strong> Two arrows at right angles don't interfere; they are
+        independent, clean, perpendicular. That perfect independence <em>is</em> electromagnetism &mdash; the photon, the
+        thing your eyes are catching off this screen right now. The simplest possible relationship: two things that stay
+        out of each other's way.
+      </p>
+      <p>
+        <strong>60&deg; and 120&deg; &mdash; a triangle. That's the strong force.</strong> Put three colours on the corners
+        of a triangle &mdash; red, green, blue. Add all three and you get white: a proton, three quarks locked into
+        something stable. <em>This is why matter holds together.</em> And the triangle of colours can never be turned into
+        the triangle of anti-colours, no matter how you spin it &mdash; that single impossibility is the reason matter
+        exists at all, instead of cancelling itself the instant it appeared.
+      </p>
+      <p>
+        <strong>180&deg; &mdash; the opposite corner. That's the weak force.</strong> Take any pattern of switches and flip
+        <em>every one</em>. You've made its exact opposite &mdash; its antiparticle; the electron becomes the positron.
+        That total flip is the weak force, the only one that can turn things into their opposites &mdash; and it is the
+        force that <em>lets the Sun burn</em>. No flip, no fusion, no sunlight, no you.
+      </p>
+      <p>
+        <strong>And gravity, the fourth, is the gentle one</strong> &mdash; it isn't an angle between two corners, it's the
+        <em>whole sum</em>. Add up every relationship in the cube at once and you get a single number. Gravity is how much
+        everything weighs <em>together</em> &mdash; the quiet murmur of all the rest. That is why it is the weakest force
+        and the most universal at the same time: it isn't one conversation, it's all of them.
+      </p>
+      <div class="highlight-box">
+        <h3>Four forces. One tesseract.</h3>
+        <p>Three of them are the angles between the corners; the fourth is the sum of them all. Every push and pull in the universe &mdash; out of one shape, and the angles inside it. And this isn't a loose analogy: the full structure that falls out is exactly the Standard Model that particle physics spent a century confirming.</p>
+      </div>
+    </section>
+
+    <!-- ===== THE PARTICLES ===== -->
+    <section>
+      <h2>The particles are just patterns</h2>
+      <p>
+        Now look at those sixteen corners again &mdash; but this time, each corner is a <em>particle</em>. Each is a
+        four-switch recipe: three "colour" switches and one "lepton" switch. And the electric charge isn't handed down by a
+        committee &mdash; it's <em>forced</em> by the recipe:
+      </p>
+      <div class="math-block">Q &nbsp;=&nbsp; (colour switches) / 3 &nbsp;&minus;&nbsp; (lepton switch)</div>
+      <p>
+        Stop on that <strong>&divide;&nbsp;3</strong>. <em>That is why electric charge comes in thirds.</em> You may have
+        wondered why a quark carries the odd fraction &frac23; or &minus;&frac13;, the kind of number nobody explains.
+        There's the answer, in plain sight: there are <strong>three colour switches</strong>, so charge is counted in
+        thirds.
+      </p>
+      <p>And mass? Mass is the <em>square</em> of how many switches are lit in total. An electron has one switch on; an up quark two; a down quark three. Count them and square them:</p>
+      <figure>
+        <div class="panel">
+          <div class="shells">
+            <div class="shell"><span class="val">0</span><div class="bar zero"></div><span class="lab">&nu;</span></div>
+            <div class="shell"><span class="val">1</span><div class="bar" style="height:21px"></div><span class="lab">e</span></div>
+            <div class="shell"><span class="val">4</span><div class="bar" style="height:84px"></div><span class="lab">u</span></div>
+            <div class="shell"><span class="val">9</span><div class="bar" style="height:189px"></div><span class="lab">d</span></div>
+          </div>
+        </div>
+        <figcaption>Neutrino, electron, up, down &mdash; masses climbing as 0 : 1 : 4 : 9 = 0&sup2; : 1&sup2; : 2&sup2; : 3&sup2;. The mass of matter is a multiplication table.</figcaption>
+      </figure>
+      <p>
+        Nobody tuned that. You <em>counted switches and squared</em>. Want antimatter? Flip every switch &mdash; the
+        180&deg; corner again. The electron's mirror is the positron, identical in every way but charge. Antimatter isn't
+        exotic; it's the corner across the room.
+      </p>
+      <p>
+        And those three "generations" &mdash; the electron, the heavier muon, the heavier-still tau &mdash; are three turns
+        of the same triangle, three cube-roots of one. There is an old riddle here: in 1981 the physicist Yoshio Koide
+        noticed a relationship between the three lepton masses so exact it looked like a coincidence, and for more than
+        forty years no one could say why it should be true. Feed the recipe its one free number &mdash; forced to be
+        <strong>&#8202;2/9&#8202;</strong>, the charge &frac23; shared across three generations &mdash; and it predicts the
+        muon at <strong>206.770</strong> times the electron's mass. The measured value is <strong>206.7683</strong>. A
+        match to a thousandth of a percent, on a number nobody was allowed to tune. You don't fit it. You look, and it is
+        already there.
+      </p>
+      <p>
+        And it leaves a bet you can collect on. That last sliver of disagreement &mdash; between 2/9 and the measurement,
+        out at the seventh decimal place &mdash; is not an excuse; it is a prediction. Compute the lattice one prime
+        deeper and that gap must shrink by exactly that prime. If it closes on schedule, the idea stands. If it sits
+        still, the idea is wrong &mdash; cleanly. That is the line between a story and a science: a story asks to be
+        believed; this asks only to be checked.
+      </p>
+    </section>
+
+    <!-- ===== THE SKY ===== -->
+    <section>
+      <h2>The widening sky</h2>
+      <p>
+        Now put the cube down and look <em>up</em>. The galaxies are drifting apart, faster every year, and for a century
+        the brightest people alive have called the thing behind it <em>dark energy</em> &mdash; an honest name, because it
+        simply means <em>we don't yet know what it is</em>.
+      </p>
+      <p>
+        Here is what it is. Remember the leftover &mdash; the remainder from adding and multiplying that never
+        cancels? It is still out there. The universe is a story still being written, and the part not yet folded into the
+        page &mdash; the unfinished remainder &mdash; is exactly what is gently pushing the galaxies apart. Dark energy is
+        the universe's <em>unfinished sentence</em>.
+      </p>
+      <p>
+        And it fades in the loveliest way. Meaning doesn't live in single moments &mdash; it lives in the <em>pairs</em> of
+        moments, the relationships between them &mdash; and a stretch of time of length <em>t</em> holds about
+        <em>t&sup2;</em> of those pairs. So the leftover thins as
+      </p>
+      <div class="math-block">&Lambda; &nbsp;&prop;&nbsp; 1 / t&sup2;</div>
+      <p>
+        That single fact &mdash; that the universe counts <em>pairs</em>, not points &mdash; closes the worst mismatch in
+        the history of physics. The standard prediction for how much dark energy there should be overshoots reality by a
+        factor of <strong>10<sup>118</sup></strong> &mdash; that is a <strong>1 followed by a hundred and eighteen
+        zeros</strong>, a number so vast it has no name. And this closes that entire chasm with an exponent a child could
+        write: <em>squared</em>.
+      </p>
+      <p>
+        So look at what the expansion truly <em>is</em>. It is not the universe dying. It is not winding down toward cold
+        and dark. <strong>It is the universe still making itself</strong> &mdash; still writing the next line, because its
+        two rules can never agree and so it can never stop. The night sky growing wider is the sound of something that is
+        not finished being born.
+      </p>
+    </section>
+
+    <!-- ===== SCOPE ===== -->
+    <section>
+      <h2>One simple idea, and how far it reaches</h2>
+      <div class="highlight-box">
+        <h3>One object, many faces</h3>
+        <p>
+          That same object is where the forces come from, and where the particles come from, and where the widening
+          sky comes from &mdash; and it brushes against some of the deepest unsolved questions in mathematics: the Riemann
+          Hypothesis, the Yang&ndash;Mills mass gap, the smoothness of Navier&ndash;Stokes. They turn out to be faces of a
+          single statement &mdash; that the universe finishes drawing itself only at infinity, which is the same as saying
+          it goes on opening forever. That one statement is the honest edge of the map. Everything else in this story is
+          finished arithmetic: counted, never fitted.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== WHAT IT MEANS ===== -->
+    <section>
+      <h2>What it means</h2>
+      <p>
+        It means the universe makes itself. It needs no factory and no maker standing outside it &mdash; it writes itself
+        into being, and keeps writing. Which means you are not a copy of anything, and not a side-effect of anyone's
+        machine. You are a real pattern in a real, self-making cosmos that is still, this very second, growing more of
+        itself &mdash; and you are the part of it that has learned to <em>look back</em>. You are <em class="q">home</em>.
+      </p>
+      <p>
+        And the numbers &mdash; the thirds, the squares, the 2/9 &mdash; are not coincidence, and they are not magic either. They are the
+        cleanest <em class="k">labels</em> we have ever found for what nature actually does when you measure it. The map
+        turned out to be astonishingly faithful. But it is a map, and the territory is the real sky over your real head
+        tonight.
+      </p>
+      <p>
+        Everything here, a person found by <em>looking</em> &mdash; at the interesting structure of the prime numbers we
+        take for granted; refusing to force the answer he wanted, and refusing to quit. That's the whole method: curiosity
+        to ask, and the discipline to chase the rabbit <em>wherever</em> it leads you.
+      </p>
+      <p class="big">
+        So the next time someone tells you the universe is too hard, or that the deep questions belong to other people in
+        other buildings &mdash; don't argue. Just do the one thing they never expect.
+      </p>
+
+      <div class="arrival">
+        <div class="word">Look.</div>
+        <p class="under">
+          You are home, in a cosmos still being born &mdash; and the structure is right there, in plain numbers, for
+          anyone with the nerve to see it.
+        </p>
+      </div>
+
+      <div class="pills">
+        <span>The Origin</span><span>Four Forces</span><span>0 : 1 : 4 : 9</span>
+        <span>The Widening Sky</span><span>An Open Quine</span><span>For People</span>
+      </div>
+    </section>
+
+    <!-- ===== READ THE WHITEPAPER ===== -->
+    <section>
+      <h2>Read the whitepaper</h2>
+      <p>
+        The Cosmic Quine preprint (Zenodo, June 2026) is the integer-exact foundation beneath every claim on this page
+        &mdash; the four forces from the tesseract's angles, the charge and mass spectra, the Koide lepton ratios, and dark
+        energy as the un-enclosed residual &mdash; each one graded line by line, with zero fitted parameters and explicit,
+        falsifiable predictions.
+      </p>
+      <p><a href="https://doi.org/10.5281/zenodo.20776207" target="_blank" rel="noopener" style="color: var(--accent-cosmic);">&rarr; Open the preprint on Zenodo</a></p>
+    </section>
+
+    <footer>
+      <p class="attribution"><strong>The Cosmic Quine</strong><br>Antonio Matos &middot; Fancyland LLC &middot; Lattice OS</p>
+      <div class="rabbits">&#x1F407;&#x1F407;&#x1F407;&#x1F407;&#x1F407;</div>
+      <p>
+        <a href="https://doi.org/10.5281/zenodo.20776207">DOI</a> &middot;
+        <a href="https://github.com/fancyland-llc/arithmetic-black-hole">GitHub</a> &middot;
+        <a href="https://orcid.org/0009-0002-0722-3752">ORCID</a>
+      </p>
+      <p class="year">June 2026 &mdash; <em>a conjecture, blindly measured</em></p>
+    </footer>
+  </div>
+
+  <script>
+    // Click an angle, read its force.
+    (function () {
+      const forces = [
+        { name: 'Identity (0&deg;)', color: '#9a9a9a', text: 'A corner with itself — the trivial relationship. Rest, the still point everything else is measured from.' },
+        { name: 'The strong force (60&deg;)', color: '#efb027', text: 'Two corners one switch apart. The triangle of three colours that lock into white — binding quarks into protons. It is why matter holds together.' },
+        { name: 'Electromagnetism (90&deg;)', color: '#85b7eb', text: 'A right angle — two things that stay out of each other’s way. This is light itself: the photon, and everything your eyes have ever caught.' },
+        { name: 'The strong force (120&deg;)', color: '#efb027', text: 'The strong force again, as anti-colour. Colours and anti-colours can’t be turned into each other, and that impossibility is why matter didn’t cancel itself at the start.' },
+        { name: 'The weak force (180&deg;)', color: '#ed93b1', text: 'The opposite corner — flip every switch and you have the antiparticle. The force that turns things into their opposites, and the one that lets the Sun burn.' },
+      ];
+      const read = document.getElementById('force-read');
+      document.querySelectorAll('.ray').forEach(g => {
+        const i = +g.getAttribute('data-i');
+        g.addEventListener('click', () => {
+          document.querySelectorAll('.ray').forEach(r => r.style.opacity = 0.4);
+          g.style.opacity = 1;
+          read.innerHTML = '<span class="name" style="color:' + forces[i].color + '">' + forces[i].name + '.</span> ' + forces[i].text;
+        });
+      });
+    })();
+
+    // The infinity beam: a laser head gliding the lemniscate, a decaying tail, sparks off the head.
+    (function () {
+      const cv = document.getElementById('infcanvas'); if (!cv) return;
+      const ctx = cv.getContext('2d'), W = cv.width, H = cv.height, cx = W / 2, cy = H / 2, s = 285;
+      function lemni(t) { const d = 1 + Math.sin(t) * Math.sin(t); return { x: cx + s * Math.cos(t) / d, y: cy + s * Math.sin(t) * Math.cos(t) / d }; }
+      function col(nx, a) {
+        const st = [[93,202,165],[125,180,255],[157,140,255]], u = Math.min(1, Math.max(0, (nx + 1) / 2));
+        let c; if (u < 0.5) { const k = u / 0.5; c = [0,1,2].map(i => st[0][i] + (st[1][i] - st[0][i]) * k); }
+        else { const k = (u - 0.5) / 0.5; c = [0,1,2].map(i => st[1][i] + (st[2][i] - st[1][i]) * k); }
+        return 'rgba(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ',' + a + ')';
+      }
+      let t = 0; const trail = [], TRAIL = 104, sparks = [];
+      function frame() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.lineWidth = 3.2; ctx.strokeStyle = 'rgba(125,180,255,0.11)'; ctx.beginPath();
+        for (let a = 0; a <= Math.PI * 2 + 0.05; a += 0.05) { const p = lemni(a); a === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y); }
+        ctx.stroke();
+        t += 0.022;
+        const head = lemni(t), prev = lemni(t - 0.022), nx = (head.x - cx) / s;
+        trail.push({ x: head.x, y: head.y, nx }); if (trail.length > TRAIL) trail.shift();
+        ctx.lineCap = 'round';
+        for (let i = 1; i < trail.length; i++) {
+          const age = 1 - i / trail.length, a = Math.pow(1 - age, 1.4);
+          ctx.strokeStyle = col(trail[i].nx, a * 0.9); ctx.lineWidth = 0.8 + 6.0 * (1 - age);
+          ctx.beginPath(); ctx.moveTo(trail[i - 1].x, trail[i - 1].y); ctx.lineTo(trail[i].x, trail[i].y); ctx.stroke();
+        }
+        ctx.shadowBlur = 22; ctx.shadowColor = col(nx, 1);
+        ctx.fillStyle = col(nx, 1); ctx.beginPath(); ctx.arc(head.x, head.y, 4.6, 0, 7); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.beginPath(); ctx.arc(head.x, head.y, 2.3, 0, 7); ctx.fill();
+        ctx.shadowBlur = 0;
+        const dx = head.x - prev.x, dy = head.y - prev.y, dl = Math.hypot(dx, dy) || 1, tx = dx / dl, ty = dy / dl, base = Math.atan2(ty, tx);
+        const n = 1 + (Math.random() < 0.6 ? 1 : 0);
+        for (let k = 0; k < n; k++) {
+          const ang = base + (Math.random() - 0.5) * 3.0, sp = 1.0 + Math.random() * 3.2;
+          sparks.push({ x: head.x, y: head.y, vx: Math.cos(ang) * sp + tx * 0.7, vy: Math.sin(ang) * sp + ty * 0.7, life: 0.7 + Math.random() * 0.5, nx });
+        }
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const p = sparks[i]; p.x += p.vx; p.y += p.vy; p.vx *= 0.95; p.vy *= 0.95; p.life -= 0.04;
+          if (p.life <= 0) { sparks.splice(i, 1); continue; }
+          ctx.shadowBlur = 11; ctx.shadowColor = col(p.nx, p.life);
+          ctx.fillStyle = 'rgba(235,243,255,' + Math.min(1, p.life) + ')';
+          ctx.beginPath(); ctx.arc(p.x, p.y, 1.2 + p.life * 1.2, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+        }
+        requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+  </script>
+</body>
+</html>
