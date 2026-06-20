@@ -2,7 +2,7 @@
 
 **Primes as a Thermalized Gas with Softmax Attention**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19442006.svg)](https://doi.org/10.5281/zenodo.19442006)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19442006-blue)](https://doi.org/10.5281/zenodo.19442006)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > The Boltzmann transition matrix governing consecutive prime residue classes is algebraically identical to the softmax attention mechanism in Transformer neural networks, with temperature $T = N/\pi(N)$ supplied by the Prime Number Theorem.
